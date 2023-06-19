@@ -493,13 +493,15 @@ def entr_custmr(request):
             obal=request.POST.get('obal')
             obal = int(obal) if obal and obal.strip() else 0 
 
-            # select=request.POST.get('pterms',None)
+          
+            # select=request.POST.get('pterms')
             # pterms=payment_terms.objects.get(id=select)
-            # pterms=request.POST.get('pterms',None)
-            select = request.POST.get('pterms', None)
+            # pterms=request.POST.get('pterms')
+            select = request.POST.get('pterms')
+            
             try:
                 pterms = payment_terms.objects.get(id=select)
-            except ObjectDoesNotExist:
+            except payment_terms.DoesNotExist:
                 pterms = None
 
             plst=request.POST.get('plst',None)
@@ -535,7 +537,7 @@ def entr_custmr(request):
                         companyName=cpname,customerEmail=email,customerWorkPhone=wphone,
                          customerMobile=mobile,skype=skname,designation=desg,department=dept,
                            website=wbsite,GSTTreatment=gstt,placeofsupply=posply, Taxpreference=tax1,
-                             currency=crncy,OpeningBalance=obal,PaymentTerms=pterms,
+                             currency=crncy,OpeningBalance=obal, PaymentTerms=pterms,
                                 PriceList=plst,PortalLanguage=plang,Facebook=fbk,Twitter=twtr,
                                  Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,
                                   city=bct,state=bst,zipcode=bzip,phone1=bpon,
