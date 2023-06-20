@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.utils.text import capfirst
@@ -354,65 +355,135 @@ def expensepage(request):
     return render(request,'expense.html',context)
 
 
-def save_expense(request):
-    c= addcustomer.objects.all()
-    if request.method == 'POST':
-        date = request.POST.get('date')
-        select=request.POST['select']
-        expense_account=Account.objects.get(id=select)
-        amount = request.POST.get('amount')
-        currency = request.POST.get('currency')
-        expense_type = request.POST.get('expense_type')
-        paid = request.POST.get('paid')
-        vendor = request.POST.get('vendor')
-        notes = request.POST.get('notes')
-        if request.POST.get('expense_type') == 'goods':
-            hsn_code = request.POST.get('sac')
-            sac = request.POST.get('hsn_code')
-        else:
-            hsn_code = request.POST.get('hsn_code')
-            sac = request.POST.get('sac')
-        attachment_file = request.FILES.get('attachment')
-        gst_treatment = request.POST.get('gst_treatment')
-        destination_of_supply = request.POST.get('destination_of_supply')
-        reverse_charge = request.POST.get('reverse_charge',False)
-        tax = request.POST.get('tax')
-        invoice = request.POST.get('invoice')
-        # customer_id= request.POST.get('customer_id')
-        # customer = addcustomer.objects.get(id=customer_id)
-        c=request.POST['c_name']
-        cus=addcustomer.objects.get(customer_id=c)  
-        # custo=cus.id
-        reporting_tags = request.POST.get('reporting_tags')
-        taxamt=request.POST.get('taxamt',False)
-        expense = Expense.objects.create(
-            user=request.user,
-            date=date,
-            expense_account=expense_account,
-            amount=amount,
-            currency=currency,
-            taxamt=taxamt,
-            sac=sac,
-            expense_type=expense_type,
-            paid=paid,
-            vendor=vendor,
-            notes=notes,
-            hsn_code=hsn_code,
-            gst_treatment=gst_treatment,
-            destination_of_supply=destination_of_supply,
-            reverse_charge=reverse_charge,
-            tax=tax,
-            invoice=invoice,
-            customer_name=cus,
-            reporting_tags=reporting_tags,
-            attachment_file = attachment_file 
-        )
+# def save_expense(request):
+#     c= addcustomer.objects.all()
+#     if request.method == 'POST':
+#         date = request.POST.get('date')
+#         select=request.POST['select']
+#         expense_account=Account.objects.get(id=select)
+#         amount = request.POST.get('amount')
+#         currency = request.POST.get('currency')
+#         expense_type = request.POST.get('expense_type')
+#         paid = request.POST.get('paid')
+#         vendor = request.POST.get('vendor')
+#         notes = request.POST.get('notes')
+#         if request.POST.get('expense_type') == 'goods':
+#             hsn_code = request.POST.get('sac')
+#             sac = request.POST.get('hsn_code')
+#         else:
+#             hsn_code = request.POST.get('hsn_code')
+#             sac = request.POST.get('sac')
+#         attachment_file = request.FILES.get('attachment')
+#         gst_treatment = request.POST.get('gst_treatment')
+#         destination_of_supply = request.POST.get('destination_of_supply')
+#         reverse_charge = request.POST.get('reverse_charge',False)
+#         tax = request.POST.get('tax')
+#         invoice = request.POST.get('invoice')
+#         # customer_id= request.POST.get('customer_id')
+#         # customer = addcustomer.objects.get(id=customer_id)
+#         c=request.POST['c_name']
+#         cus=addcustomer.objects.get(customer_id=c)  
+#         # custo=cus.id
+#         reporting_tags = request.POST.get('reporting_tags')
+#         taxamt=request.POST.get('taxamt',False)
+#         expense = Expense.objects.create(
+#             user=request.user,
+#             date=date,
+#             expense_account=expense_account,
+#             amount=amount,
+#             currency=currency,
+#             taxamt=taxamt,
+#             sac=sac,
+#             expense_type=expense_type,
+#             paid=paid,
+#             vendor=vendor,
+#             notes=notes,
+#             hsn_code=hsn_code,
+#             gst_treatment=gst_treatment,
+#             destination_of_supply=destination_of_supply,
+#             reverse_charge=reverse_charge,
+#             tax=tax,
+#             invoice=invoice,
+#             customer_name=cus,
+#             reporting_tags=reporting_tags,
+#             attachment_file = attachment_file 
+#         )
 
-        expense.save()
+#         expense.save()
 
-        return redirect('expensepage')  
+#         return redirect('expensepage')  
     
-    return render(request, 'addexpense.html',{'customer':c}) 
+#     return render(request, 'addexpense.html',{'customer':c}) 
+def save_expense(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # Handle expense form submission
+            date = request.POST.get('date')
+            select = request.POST['select']
+            expense_account = Account.objects.get(id=select)
+            amount = request.POST.get('amount')
+            currency = request.POST.get('currency')
+            expense_type = request.POST.get('expense_type')
+            paid = request.POST.get('paid')
+            vendor = request.POST.get('vendor')
+            notes = request.POST.get('notes')
+            if request.POST.get('expense_type') == 'goods':
+                hsn_code = request.POST.get('sac')
+                sac = request.POST.get('hsn_code')
+            else:
+                hsn_code = request.POST.get('hsn_code')
+                sac = request.POST.get('sac')
+            # attachment_file = request.FILES.get('attachment')
+            gst_treatment = request.POST.get('gst_treatment')
+            destination_of_supply = request.POST.get('destination_of_supply')
+            reverse_charge = request.POST.get('reverse_charge', False)
+            tax = request.POST.get('tax')
+            invoice = request.POST.get('invoice')
+            # c = request.POST['c_name']
+            c = request.POST.get('customer')
+            customer = addcustomer.objects.get(customer_name=c)
+           
+
+            # customer = addcustomer.objects.get(customer_id=c)
+            reporting_tags = request.POST.get('reporting_tags')
+            taxamt = request.POST.get('taxamt', False)
+
+            expense = Expense.objects.create(
+                user=request.user,
+                date=date,
+                expense_account=expense_account,
+                amount=amount,
+                currency=currency,
+                taxamt=taxamt,
+                sac=sac,
+                expense_type=expense_type,
+                paid=paid,
+                vendor=vendor,
+                notes=notes,
+                hsn_code=hsn_code,
+                gst_treatment=gst_treatment,
+                destination_of_supply=destination_of_supply,
+                reverse_charge=reverse_charge,
+                tax=tax,
+                invoice=invoice,
+                customer_name=customer,
+                reporting_tags=reporting_tags,
+                # attachment_file=attachment_file
+            )
+
+            expense.save()
+
+            return redirect('expensepage')
+        else:
+            # Display the save_expense form
+            c = addcustomer.objects.all()
+            accounts = Account.objects.all()
+            account_types = set(Account.objects.values_list('type', flat=True))
+            return render(request, 'addexpense.html', {'customer': c, 'accounts': accounts, 'account_types': account_types})
+    else:
+        # Handle the case when the user is not authenticated
+        return HttpResponse("Unauthorized", status=401)
+
 
 def add_accountE(request):
     accounts = Account.objects.all()
@@ -546,7 +617,7 @@ def entr_custmr(request):
                                     CPmobile= bmobile,CPskype=bskype,CPdesignation=bdesg,
                                      CPdepartment=bdept,user=u )
             ctmr.save()  
-            
+           
             return redirect('save_expense')
         return render(request, 'addcustomer.html')
 

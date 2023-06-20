@@ -62,7 +62,8 @@
                 <td>{{ expense.expense_account.name}}</td>
                 <td>{{ expense.vendor }}</td>
                 <td>{{ expense.paid }}</td>
-                <td>{{ expense.customer_name }}</td>
+                <td>{{ expense.customer_name.customer_name }}</td>
+
                 <td>{{ expense.amount }}</td>
               </tr>
               {% endfor %}
