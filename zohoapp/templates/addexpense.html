@@ -36,7 +36,8 @@
           <label class="col-sm-2 col-form-label"> Expense Account</label>
           <div class="col-sm-10 col-md-7 col-9 ml-5">
             <select class="form-control form-select" id="select" name="select" onchange="openpopup(this);" required>
-              <option hidden disabled selected value="">Select Account</option>
+            
+              <option value="">-- Select Expense Account --</option>
               {% for account_type in account_types %}
               <option value="" disabled class="btn btn-dark text-white"><b>{{ account_type }}</b></option>
               {% for account in accounts %}
@@ -45,6 +46,7 @@
                   <option value="{{ account.id}}" selected>{{ account.name }}</option>
               {% else %}
                   <option value="{{ account.id }}">{{ account.name }}</option>
+                
               {% endif %}
               {% endif %}
               {% endfor %}
@@ -53,7 +55,8 @@
             </select>
           </div>
         </div>
-
+      
+        
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Expense Type</label>
         <div class="col-sm-10" style="color: white;">
@@ -162,7 +165,7 @@
           </div>
         </div>
         
-        <div class="form-group row">
+        <!-- <div class="form-group row">
           <label for="vendor" class="col-sm-2 col-form-label">Vendor</label>
           <div class="col-sm-10">
             <select class="form-control select2" id="vendor" name="vendor">
@@ -175,7 +178,28 @@
               <option value="Composition Reg Vendor">Composition Reg Vendor</option>
             </select>
           </div>
+        </div> -->
+        <div class="form-group row">
+          <label for="vendor" class="col-sm-2 col-form-label">Vendor</label>
+          <div class="col-sm-10">
+            <select class="form-control select2" id="vendor" name="vendor"onchange="handleSelectChangev(this);">
+              <option value="">-- Select a vendor --</option>
+              {% for v in vendor %}
+              <option value="{{ v.vendor_display_name}}">{{v.vendor_display_name }}</option>
+               {% endfor %}
+          <option value="new">Register as a vendor</option>
+            </select>
+          </div>
         </div>
+
+  
+  <script>
+    function handleSelectChangev(select) {
+        if (select.value === "new") {
+            window.location.href = "{% url 'add_vendor' %}";
+        }
+    }
+</script>
         
         <div class="form-group row">
           <label for="gst_treatment" class="col-sm-2 col-form-label">GST Treatment</label>
@@ -296,22 +320,42 @@
                   <option value="{{ cust.customer_name }}">{{ cust.customer_name }}</option>
               {% endfor %}
               <option value="new">Register as a customer</option>
-          </select> -->
+          </select>  -->
           <div class="form-group row">
+            <label for="customer" class="col-sm-2 col-form-label">Customer</label>
+            <div class="col-sm-10">
+              <select class="form-control select2" id="customer" name="customer" onchange="handleSelectChange(this);">
+                {% if selected_customer_name %}
+                  <option value="">-- Select a customer --</option>
+                {% else %}
+                  <option value="" selected>-- Select a customer --</option>
+                {% endif %}
+                {% for cust in customer %}
+                  {% if cust.customer_name == selected_customer_name %}
+                    <option value="{{ cust.customer_name }}" selected>{{ cust.customer_name }}</option>
+                  {% else %}
+                    <option value="{{ cust.customer_name }}">{{ cust.customer_name }}</option>
+                  {% endif %}
+                {% endfor %}
+                <option value="new">Register as a customer</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Customer</label>
             <div class="col-sm-10">
               <select class="form-control select2" id="customer" name="customer"onchange="handleSelectChange(this);">
                 <option value="">-- Select a customer --</option>
                 {% for cust in customer %}
-                <option value="{{ cust.customer_name }}">{{ cust.customer_name }}</option>
+                <option value="{{ cust.customer_name }}" selected>{{ cust.customer_name }}</option>
                  {% endfor %}
             <option value="new">Register as a customer</option>
+              
               </select>
             </div>
-          </div>
-          
-          
-        
+          </div> -->
+    
       <!-- </div>
   </div>
         -->
@@ -324,7 +368,8 @@
       }
   </script>
           <!-- </div> -->
-      <!-- </div> -->
+      <!-- </div>
+      
          <div class="form-group row">
           <label for="reporting_tags" class="col-sm-2 col-form-label">Reporting Tags:</label>
           <div class="col-sm-10">

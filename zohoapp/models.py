@@ -122,29 +122,7 @@ class addcustomer(models.Model):
     CPskype=models.CharField(max_length=100,null=True,blank=True)
     CPdesignation=models.CharField(max_length=100,null=True,blank=True)
     CPdepartment=models.CharField(max_length=100,null=True,blank=True)
-class Expense(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    expense_account=models.ForeignKey(Account,on_delete=models.CASCADE)
-    amount=models.TextField(max_length=255)
-    currency=models.TextField(max_length=255)
-    expense_type=models.TextField(max_length=255)
-    paid=models.TextField(max_length=255)
-    vendor=models.TextField(max_length=255)#ForeignKey
-    notes=models.TextField(max_length=255)
-    hsn_code=models.TextField(max_length=255)
-    gst_treatment =models.TextField(max_length=255)
-    destination_of_supply=models.TextField(max_length=255)
-    reverse_charge=models.TextField(max_length=255)
-    tax=models.TextField(max_length=255)
-    invoice=models.TextField(max_length=255)
-    # customer_name=models.ForeignKey(addcustomer,on_delete=models.CASCADE)
-    customer_name = models.ForeignKey(addcustomer, on_delete=models.CASCADE)
-    reporting_tags=models.TextField(max_length=255,null=True, blank=True)#ForeignKey
-    date = models.DateField()
-    sac=models.TextField(max_length=255)
-    taxamt=models.TextField(max_length=255)
-    attachment = models.FileField(upload_to='expense_attachments/', blank=True, null=True)
- 
+
 class vendor_table(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     salutation=models.CharField(max_length=25)
@@ -202,4 +180,29 @@ class remarks_table(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
     remarks=models.CharField(max_length=500)
+    
+
+class Expense(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    expense_account=models.ForeignKey(Account,on_delete=models.CASCADE)
+    amount=models.TextField(max_length=255)
+    currency=models.TextField(max_length=255)
+    expense_type=models.TextField(max_length=255)
+    paid=models.TextField(max_length=255)
+    vendor= models.ForeignKey(vendor_table, on_delete=models.CASCADE)
+    notes=models.TextField(max_length=255)
+    hsn_code=models.TextField(max_length=255)
+    gst_treatment =models.TextField(max_length=255)
+    destination_of_supply=models.TextField(max_length=255)
+    reverse_charge=models.TextField(max_length=255)
+    tax=models.TextField(max_length=255)
+    invoice=models.TextField(max_length=255)
+    # customer_name=models.ForeignKey(addcustomer,on_delete=models.CASCADE)
+    customer_name = models.ForeignKey(addcustomer, on_delete=models.CASCADE)
+    reporting_tags=models.TextField(max_length=255,null=True, blank=True)#ForeignKey
+    date = models.DateField()
+    sac=models.TextField(max_length=255)
+    taxamt=models.TextField(max_length=255)
+    attachment = models.FileField(upload_to='expense_attachments/', blank=True, null=True)
+ 
     

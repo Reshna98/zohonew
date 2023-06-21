@@ -29,5 +29,7 @@ urlpatterns = [
     path('expense_details/<int:pk>',views.expense_details,name='expense_details'),
     # path('edit_expense/<int:pk>',views.edit_expense,name='edit_expense'),
     path('entr_custmr/', views.entr_custmr, name='entr_custmr'),
+    path('add_vendor/', views.add_vendor, name='add_vendor'),
+     path('add_vendor', views.add_vendor, name='add_vendor')
   
 ]

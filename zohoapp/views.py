@@ -425,7 +425,7 @@ def save_expense(request):
             currency = request.POST.get('currency')
             expense_type = request.POST.get('expense_type')
             paid = request.POST.get('paid')
-            vendor = request.POST.get('vendor')
+            # vendor = request.POST.get('vendor')
             notes = request.POST.get('notes')
             if request.POST.get('expense_type') == 'goods':
                 hsn_code = request.POST.get('sac')
@@ -443,6 +443,9 @@ def save_expense(request):
             c = request.POST.get('customer')
             customer = addcustomer.objects.get(customer_name=c)
            
+        
+            v= request.POST.get('vendor')
+            vendor=vendor_table.objects.get(vendor_display_name=v)
 
             # customer = addcustomer.objects.get(customer_id=c)
             reporting_tags = request.POST.get('reporting_tags')
@@ -458,7 +461,7 @@ def save_expense(request):
                 sac=sac,
                 expense_type=expense_type,
                 paid=paid,
-                vendor=vendor,
+                
                 notes=notes,
                 hsn_code=hsn_code,
                 gst_treatment=gst_treatment,
@@ -466,8 +469,9 @@ def save_expense(request):
                 reverse_charge=reverse_charge,
                 tax=tax,
                 invoice=invoice,
-                customer_name=customer,
+                customer_name= customer,
                 reporting_tags=reporting_tags,
+                vendor=vendor
                 # attachment_file=attachment_file
             )
 
@@ -477,14 +481,15 @@ def save_expense(request):
         else:
             # Display the save_expense form
             c = addcustomer.objects.all()
+            v=vendor_table.objects.all()
             accounts = Account.objects.all()
             account_types = set(Account.objects.values_list('type', flat=True))
-            return render(request, 'addexpense.html', {'customer': c, 'accounts': accounts, 'account_types': account_types})
-    else:
-        # Handle the case when the user is not authenticated
-        return HttpResponse("Unauthorized", status=401)
-
-
+           
+          
+            return render(request, 'addexpense.html', {'vendor':v,'customer': c, 'accounts': accounts, 'account_types': account_types,
+            })
+   
+   
 def add_accountE(request):
     accounts = Account.objects.all()
     account_types = set(Account.objects.values_list('type', flat=True))
@@ -631,3 +636,91 @@ def payment_term(request):
         ptr=payment_terms(Terms=term,Days=day)
         ptr.save()
         return redirect("entr_custmr")
+
+@login_required(login_url='login')
+def add_vendor(request):
+    if request.method=="POST":
+        vendor_data=vendor_table()
+        vendor_data.salutation=request.POST['salutation']
+        vendor_data.first_name=request.POST['first_name']
+        vendor_data.last_name=request.POST['last_name']
+        vendor_data.company_name=request.POST['company_name']
+        vendor_data.vendor_display_name=request.POST['v_display_name']
+        vendor_data.vendor_email=request.POST['vendor_email']
+        vendor_data.vendor_wphone=request.POST['w_phone']
+        vendor_data.vendor_mphone=request.POST['m_phone']
+        vendor_data.skype_number=request.POST['skype_number']
+        vendor_data.designation=request.POST['designation']
+        vendor_data.department=request.POST['department']
+        vendor_data.website=request.POST['website']
+        vendor_data.gst_treatment=request.POST['gst']
+
+        x=request.POST['gst']
+        if x=="Unregistered Business-not Registered under GST":
+            vendor_data.pan_number=request.POST['pan_number']
+            vendor_data.gst_number="null"
+        else:
+            vendor_data.gst_number=request.POST['gst_number']
+            vendor_data.pan_number=request.POST['pan_number']
+
+        vendor_data.source_supply=request.POST['source_supply']
+        vendor_data.currency=request.POST['currency']
+        vendor_data.opening_bal=request.POST['opening_bal']
+        vendor_data.payment_terms=request.POST['payment_terms']
+
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vendor_data.user=udata
+        vendor_data.battention=request.POST.get('battention',None)
+        vendor_data.bcountry=request.POST.get('bcountry',None)
+        vendor_data.baddress=request.POST.get('baddress',None)
+        vendor_data.bcity=request.POST.get('bcity',None)
+        vendor_data.bstate=request.POST.get('bstate',None)
+        vendor_data.bzip=request.POST.get('bzip',None)
+        vendor_data.bphone=request.POST.get('bphone',None)
+        vendor_data.bfax=request.POST.get('bfax',None)
+
+        vendor_data.sattention=request.POST.get('sattention',None)
+        vendor_data.scountry=request.POST.get('scountry',None)
+        vendor_data.saddress=request.POST.get('saddress',None)
+        vendor_data.scity=request.POST.get('scity',None)
+        vendor_data.sstate=request.POST.get('sstate',None)
+        vendor_data.szip=request.POST.get('szip',None)
+        vendor_data.sphone=request.POST.get('sphone',None)
+        vendor_data.sfax=request.POST.get('sfax',None)
+        vendor_data.save()
+# .......................................................adding to remaks table.....................
+        vdata=vendor_table.objects.get(id=vendor_data.id)
+        vendor=vdata
+        rdata=remarks_table()
+        rdata.remarks=request.POST.get('remark',None)
+        rdata.user=udata
+        rdata.vendor=vdata
+        rdata.save()
+
+
+#  ...........................adding multiple rows of table to model  ........................................................       
+        salutation =request.POST.getlist('salutation[]',None)
+        first_name =request.POST.getlist('first_name[]',None)
+        last_name =request.POST.getlist('last_name[]',None)
+        email =request.POST.getlist('email[]',None)
+        work_phone =request.POST.getlist('wphone[]',None)
+        mobile =request.POST.getlist('mobile[]',None)
+        skype_number =request.POST.getlist('skype[]',None)
+        designation =request.POST.getlist('designation[]',None)
+        department =request.POST.getlist('department[]',None) 
+        vdata=vendor_table.objects.get(id=vendor_data.id)
+        vendor=vdata
+       
+
+        if len(salutation)==len(first_name)==len(last_name)==len(email)==len(work_phone)==len(mobile)==len(skype_number)==len(designation)==len(department):
+            mapped2=zip(salutation,first_name,last_name,email,work_phone,mobile,skype_number,designation,department)
+            mapped2=list(mapped2)
+            print(mapped2)
+            for ele in mapped2:
+                created = contact_person_table.objects.get_or_create(salutation=ele[0],first_name=ele[1],last_name=ele[2],email=ele[3],
+                         work_phone=ele[4],mobile=ele[5],skype_number=ele[6],designation=ele[7],department=ele[8],user=udata,vendor=vendor)
+        
+        return redirect('save_expense')
+    return render(request, 'addvendor.html')
+
