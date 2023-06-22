@@ -27,9 +27,9 @@ urlpatterns = [
     path('entr_custmr',views.entr_custmr,name='entr_custmr'),
     path('payment_term',views.payment_term,name='payment_term'),
     path('expense_details/<int:pk>',views.expense_details,name='expense_details'),
-    # path('edit_expense/<int:pk>',views.edit_expense,name='edit_expense'),
+    path('edit_expense/<int:expense_id>',views.edit_expense,name='edit_expense'),
     path('entr_custmr/', views.entr_custmr, name='entr_custmr'),
     path('add_vendor/', views.add_vendor, name='add_vendor'),
-     path('add_vendor', views.add_vendor, name='add_vendor')
-  
+    path('add_vendor', views.add_vendor, name='add_vendor'),
+    path('dele/<int:id>',views.dele,name='dele'),
 ]

@@ -43,8 +43,8 @@
               </a></div>
             <div class="col-md-4 " style="margin-top: -3rem;margin-left: 20rem;position: fixed;"><a
                 style="color: #ccc;width: 4rem;height: 2rem;margin-top: 3rem;" class="btn btn-light text-dark "
-                onclick="location.href ='' "><i class="fa fa-pencil"></i></i></a>
-              <a href="" style="color: #ccc;height: 2rem;margin-top: 3rem;margin-left: 5rem;"
+                onclick="location.href ='{% url 'edit_expense' expense.id %}'"><i class="fa fa-pencil"></i></i></a>
+              <a href="'{% url 'dele' expense.id %}'" style="color: #ccc;height: 2rem;margin-top: 3rem;margin-left: 5rem;"
                 class="btn btn-danger  text-white ">Delete</a>
         
                 

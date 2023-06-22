@@ -436,7 +436,7 @@ def save_expense(request):
             # attachment_file = request.FILES.get('attachment')
             gst_treatment = request.POST.get('gst_treatment')
             destination_of_supply = request.POST.get('destination_of_supply')
-            reverse_charge = request.POST.get('reverse_charge', False)
+            reverse_charge = request.POST.get('reverse_charge',False)
             tax = request.POST.get('tax')
             invoice = request.POST.get('invoice')
             # c = request.POST['c_name']
@@ -724,3 +724,68 @@ def add_vendor(request):
         return redirect('save_expense')
     return render(request, 'addvendor.html')
 
+def edit_expense(request,expense_id):
+    if request.user.is_authenticated:
+        expense = Expense.objects.get(id=expense_id)
+
+        if request.method == 'POST':
+            date = request.POST.get('date')
+            select = request.POST['select']
+            expense_account = Account.objects.get(id=select)
+            amount = request.POST.get('amount')
+            currency = request.POST.get('currency')
+            expense_type = request.POST.get('expense_type')
+            paid = request.POST.get('paid')
+            notes = request.POST.get('notes')
+            if request.POST.get('expense_type') == 'goods':
+                hsn_code = request.POST.get('sac')
+                sac = request.POST.get('hsn_code')
+            else:
+                hsn_code = request.POST.get('hsn_code')
+                sac = request.POST.get('sac')
+            gst_treatment = request.POST.get('gst_treatment')
+            destination_of_supply = request.POST.get('destination_of_supply')
+            reverse_charge = request.POST.get('reverse_charge', False)
+            tax = request.POST.get('tax')
+            invoice = request.POST.get('invoice')
+            c = request.POST.get('customer')
+            customer = addcustomer.objects.get(customer_name=c)
+            v = request.POST.get('vendor')
+            vendor = vendor_table.objects.get(vendor_display_name=v)
+            reporting_tags = request.POST.get('reporting_tags')
+            taxamt = request.POST.get('taxamt', False)
+
+            expense.date = date
+            expense.expense_account = expense_account
+            expense.amount = amount
+            expense.currency = currency
+            expense.taxamt = taxamt
+            expense.sac = sac
+            expense.expense_type = expense_type
+            expense.paid = paid
+            expense.notes = notes
+            expense.hsn_code = hsn_code
+            expense.gst_treatment = gst_treatment
+            expense.destination_of_supply = destination_of_supply
+            expense.reverse_charge = reverse_charge
+            expense.tax = tax
+            expense.invoice = invoice
+            expense.customer_name = customer
+            expense.reporting_tags = reporting_tags
+            expense.vendor = vendor
+
+            expense.save()
+
+            return redirect('expensepage')
+        else:
+            # Display the edit_expense form
+            c = addcustomer.objects.all()
+            v = vendor_table.objects.all()
+            accounts = Account.objects.all()
+            account_types = set(Account.objects.values_list('type', flat=True))
+
+            return render(request, 'editexpense.html', {'vendor': v, 'customer': c, 'accounts': accounts, 'account_types': account_types, 'expense': expense})
+def dele(request,id):
+    dl=Expense.objects.get(id=id)
+    dl.delete()
+    return redirect('expense_details')

@@ -43,7 +43,7 @@
               {% for account in accounts %}
               {% if account.type == account_type %}
               {% if account.Account_name == selected_type %}
-                  <option value="{{ account.id}}" selected>{{ account.name }}</option>
+                  <option value="{{ account.id}}">{{ account.name }}</option>
               {% else %}
                   <option value="{{ account.id }}">{{ account.name }}</option>
                 
@@ -321,41 +321,22 @@
               {% endfor %}
               <option value="new">Register as a customer</option>
           </select>  -->
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Customer</label>
-            <div class="col-sm-10">
-              <select class="form-control select2" id="customer" name="customer" onchange="handleSelectChange(this);">
-                {% if selected_customer_name %}
-                  <option value="">-- Select a customer --</option>
-                {% else %}
-                  <option value="" selected>-- Select a customer --</option>
-                {% endif %}
-                {% for cust in customer %}
-                  {% if cust.customer_name == selected_customer_name %}
-                    <option value="{{ cust.customer_name }}" selected>{{ cust.customer_name }}</option>
-                  {% else %}
-                    <option value="{{ cust.customer_name }}">{{ cust.customer_name }}</option>
-                  {% endif %}
-                {% endfor %}
-                <option value="new">Register as a customer</option>
-              </select>
-            </div>
-          </div>
+         
           
-          <!-- <div class="form-group row">
+           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Customer</label>
             <div class="col-sm-10">
               <select class="form-control select2" id="customer" name="customer"onchange="handleSelectChange(this);">
                 <option value="">-- Select a customer --</option>
                 {% for cust in customer %}
-                <option value="{{ cust.customer_name }}" selected>{{ cust.customer_name }}</option>
+                <option value="{{ cust.customer_name }}">{{ cust.customer_name }}</option>
                  {% endfor %}
             <option value="new">Register as a customer</option>
               
               </select>
             </div>
-          </div> -->
-    
+          </div>
+     
       <!-- </div>
   </div>
         -->
@@ -402,7 +383,7 @@
           </div>
         </div>
     
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
