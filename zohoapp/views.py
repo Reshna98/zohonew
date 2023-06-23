@@ -785,7 +785,25 @@ def edit_expense(request,expense_id):
             account_types = set(Account.objects.values_list('type', flat=True))
 
             return render(request, 'editexpense.html', {'vendor': v, 'customer': c, 'accounts': accounts, 'account_types': account_types, 'expense': expense})
+# def dele(request,id):
+#     dl=Expense.objects.get(id=id)
+#     dl.delete()
+#     return redirect('expense_details')
 def dele(request,id):
-    dl=Expense.objects.get(id=id)
-    dl.delete()
-    return redirect('expense_details')
+    items=Expense.objects.filter(id=id)
+    items.delete()
+    
+    return redirect('expensepage')
+def attach(request,expense_id):
+    if request.method == 'POST' and request.FILES.get('attachment'):
+        uploaded_file = request.FILES['attachment']
+        expense = Expense.objects.get(id=expense_id)
+        expense.attachment = uploaded_file
+        expense.save()
+    
+        context = {
+        'expense_id': expense_id,  # Pass the expense ID as a context variable
+    }
+    
+
+    return render(request, 'expense_details.html', context)
