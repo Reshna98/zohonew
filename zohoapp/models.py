@@ -180,7 +180,8 @@ class remarks_table(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
     remarks=models.CharField(max_length=500)
-    
+class retag(models.Model):
+    reporting_tags=models.TextField(max_length=255,null=True, blank=True)
 
 class Expense(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -199,10 +200,11 @@ class Expense(models.Model):
     invoice=models.TextField(max_length=255)
     # customer_name=models.ForeignKey(addcustomer,on_delete=models.CASCADE)
     customer_name = models.ForeignKey(addcustomer, on_delete=models.CASCADE)
-    reporting_tags=models.TextField(max_length=255,null=True, blank=True)#ForeignKey
+    # reporting_tags=models.TextField(max_length=255,null=True, blank=True)
+    reporting_tag = models.ForeignKey(retag, on_delete=models.CASCADE)
     date = models.DateField()
     sac=models.TextField(max_length=255)
     taxamt=models.TextField(max_length=255)
     attachment = models.FileField(upload_to='expense_attachments/', blank=True, null=True)
  
-    
+

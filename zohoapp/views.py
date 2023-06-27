@@ -448,7 +448,8 @@ def save_expense(request):
             vendor=vendor_table.objects.get(vendor_display_name=v)
 
             # customer = addcustomer.objects.get(customer_id=c)
-            reporting_tags = request.POST.get('reporting_tags')
+            retags= request.POST.get('reporting_tags')
+            reporting_tags=retag.objects.get(reporting_tags=retags)
             taxamt = request.POST.get('taxamt', False)
 
             expense = Expense.objects.create(
@@ -470,7 +471,7 @@ def save_expense(request):
                 tax=tax,
                 invoice=invoice,
                 customer_name= customer,
-                reporting_tags=reporting_tags,
+                reporting_tag=reporting_tags,
                 vendor=vendor
                 # attachment_file=attachment_file
             )
@@ -489,7 +490,12 @@ def save_expense(request):
             return render(request, 'addexpense.html', {'vendor':v,'customer': c, 'accounts': accounts, 'account_types': account_types,
             })
    
-   
+def retags(request):
+    if request.method=='POST':
+        retag=request.POST.get('retag',None)
+        ptr=retag(retag)
+        ptr.save()
+        return redirect("entr_custmr")  
 def add_accountE(request):
     accounts = Account.objects.all()
     account_types = set(Account.objects.values_list('type', flat=True))

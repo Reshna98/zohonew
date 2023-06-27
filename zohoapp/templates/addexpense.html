@@ -7,7 +7,14 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <style>
-
+    .col-form-label {
+  
+    margin-right: 5px; 
+  }
+.popup{
+  background-color: black;
+  
+}
 
 .form-group{
   width: 40%;
@@ -34,7 +41,7 @@
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label"> Expense Account</label>
-          <div class="col-sm-10 col-md-7 col-9 ml-5">
+          <div class="col-sm-10">
             <select class="form-control form-select" id="select" name="select" onchange="openpopup(this);" required>
             
               <option value="">-- Select Expense Account --</option>
@@ -68,13 +75,13 @@
       <div class="form-group row" id="hsn_div" style="display: none;">
         <label id="hsn_label" for="hsn_code" class="col-sm-2 col-form-label">HSN</label>
         <div class="col-sm-10">
-          <input type="text" id="hsn_code" name="hsn_code" class="form-control" style="margin-left: 22%;">
+          <input type="text" id="hsn_code" name="hsn_code" class="form-control">
         </div>
       </div>
       <div class="form-group row" id="sac_div" style="display:block;">
         <label id="sac_label" for="sac" class="col-sm-2 col-form-label">SAC</label>
         <div class="col-sm-10">
-          <input type="text" id="sac" name="sac" class="form-control" style="margin-left: 22%;">
+          <input type="text" id="sac" name="sac" class="form-control">
         </div>
       </div>
       <script>
@@ -339,59 +346,44 @@
       }
   </script>
           <!-- </div> -->
-      <!-- </div>
-      
-         <div class="form-group row">
-          <label for="reporting_tags" class="col-sm-2 col-form-label">Reporting Tags:</label>
-          <div class="col-sm-10">
-            <input type="hidden" class="form-control" id="reporting_tags" name="reporting_tags">
-            <span id="reporting_tags_label"></span>
-            <a href="#" class="associate-tag-link" data-toggle="modal" data-target="#associate-tag-modal"> + Associate Tag</a>
-          </div>
-        </div>
-        <div class="modal fade" id="associate-tag-modal" tabindex="-1" role="dialog" aria-labelledby="associate-tag-modal-label"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="associate-tag-modal-label">Associate Tag</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <label for="associated_tag">Associated Tag:</label>
-                  <input type="text" class="form-control" id="associated_tag">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveAssociatedTag()">Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!-- </div> -->
     
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
-
-    <script>
-      function saveAssociatedTag() {
-        var associatedTag = $("#associated_tag").val();
-        var reportingTags = $("#reporting_tags").val();
-        if (reportingTags) {
-          reportingTags += ", " + associatedTag;
-        } else {
-          reportingTags = associatedTag;
+      <div class="form-group row">
+        <label for="reporting_tags" class="col-sm-2 col-form-label">Reporting Tags:</label>
+        <div class="col-sm-10">
+          <input type="hidden" class="form-control" id="reporting_tags" name="reporting_tags">
+          <span id="reporting_tags_label"></span>
+          <a href="#" class="associate-tag-link" onclick="openPopup2()">+ Associate Tag</a>
+        </div>
+      </div>
+      <div class="popup" id="popup2">
+        <div style="margin-top: 4rem;" class="display-flex">
+          <h4 class="text-white">Add Tag</h4>
+          <h6 class="float-right text-white" style="margin-right: 1rem; margin-top: -2rem;" onclick="closePopup2()">X</h6>
+        </div>
+        <form action="{% url 'retags' %}" method="post">
+          {% csrf_token %}
+          <label class="text-white" for="retag">Reporting Tag</label> <br>
+          <input  type="text" name="retag" id="retag"> <br>
+         
+          <input style="width: 5rem; height: 2rem; color: black;" class="btn btn-success" type="submit" value="Submit">
+          <button style="width: 5rem; height: 2rem; color: black;" class="btn btn-secondary" type="button" onclick="closePopup2()">Cancel</button>
+        </form>
+      </div>
+      
+      <script>
+        let popup2 = document.getElementById("popup2");
+      
+        function openPopup2() {
+          popup2.classList.add("open-popup");
         }
-        $("#reporting_tags").val(reportingTags);
-        $("#reporting_tags_label").text(reportingTags);
-        $("#associate-tag-modal").modal("hide");
-      }
-    </script>
+      
+        function closePopup2() {
+          popup2.classList.remove("open-popup");
+        }
+      </script>
+      
+
     
     <div class="col-sm-10 offset-sm-2">
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -405,22 +397,22 @@
 <script>
   $('.select2').select2();
   </script>
-  <div class="popup" id="popup" style="height: 150%;">
+  <div class="popup" id="popup">
     <div style="margin-top: 4rem;" class="display-flex">
-      <h4 class="text-dark">Add Account</h4>
-      <h6 class="float-right text-dark" style="margin-right: 1rem; margin-top: -2rem;" onclick="closepopup()">X</h6>
+      <h4 class="text-white">Add Account</h4>
+      <h6 class="float-right text-white" style="margin-right: 1rem; margin-top: -2rem;" onclick="closepopup()">X</h6>
     </div>
-    <form style="margin-top: 3rem;" action="{% url 'add_accountE' %}" method="post">
+    <form  action="{% url 'add_accountE' %}" method="post">
         {% csrf_token %}
-        <label class="text-dark">Account type</label> <br>
+        <label class="text-white">Account type</label> <br>
         <input required type="text" name="type" id="type"> <br>
-        <label class="text-dark">Account Name</label> <br>
+        <label class="text-white">Account Name</label> <br>
         <input required type="text" name="name" id="name"> <br>
-        <label class="text-dark">Parent name</label> <br>
+        <label class="text-white">Parent name</label> <br>
         <input type="text" name="pname" id="pname"> <br>
-        <label class="text-dark">Account Code</label> <br>
+        <label class="text-white">Account Code</label> <br>
         <input type="text" name="code" id="code"> <br>
-        <label class="text-dark">Account Description</label> <br>
+        <label class="text-white">Account Description</label> <br>
         <input type="text" name="description" id="description"> <br> <br>
         <input style="width: 5rem; height: 2rem; color: black;" class="btn btn-success" type="submit" value="Submit">
         <button style="width: 5rem; height: 2rem; color: black;" class="btn btn-secondary" type="button" onclick="closepopup()">Cancel</button>
@@ -439,6 +431,8 @@
   function closepopup() {
       popup.classList.remove("open-popup");
   }
+
 </script>
+
 {%endblock%}
 

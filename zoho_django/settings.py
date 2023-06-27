@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'zoho_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zohobookbasee',
+        'NAME': 'zohobookbase',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
