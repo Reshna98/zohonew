@@ -40,21 +40,23 @@
        </div> 
         <div class="col-md-9" style="margin-left: 25rem;">
           <div class="row" style="position: fixed;">
-            <div class="col-md-4" style="position: fixed;"><a class="text-white" style="font-size: 1.5rem;">
+            <div class="col-md-4" style="position: fixed;"><a class="text-white" style="font-size: 1rem;">
                 <h2>{{expense.expense_account.name}}</h2>
               </a></div>
-            <div class="col-md-4 " style="margin-top: -3rem;margin-left: 20rem;position: fixed;">
+            <div class="col-sm-12" style="margin-top: -3rem;margin-left: 10rem;position: fixed;">
               <a
                 style="color: #ccc;width: 4rem;height: 2rem;margin-top: 3rem;" class="btn btn-light text-dark "
                 onclick="location.href ='{% url 'edit_expense' expense.id %}'"><i class="fa fa-pencil"></i></a>
-                <!-- <button class="attach-button" id="attach-button" style="color: #ccc;height: 2rem;margin-top: 2rem;" >
-                  <i class="fas fa-paperclip"></i>
-                  Attach
-              </button> -->
-              <!-- <a href="#" style="color: #ccc;height: 2rem;margin-top: 3rem;margin-left: 2rem;"
+              
+              
+                <!-- <a href="#" style="color: #ccc; height: 2rem; margin-top: 3rem; margin-left: 2rem;"
+     class="btn btn-light text-dark file-button text-white" id="file-button">
+    <i class="fas fa-paperclip"></i>
+  </a>
+             <a href="#" style="color: #ccc;height: 2rem;margin-top: 3rem;margin-left: 2rem;"
               class="btn btn-light text-dark attach-button  text-white" id="attach-button" >  <i class="fas fa-paperclip"></i></a> -->
             
-              <a href="#" style="color: #ccc; height: 2rem; margin-top: 3rem; margin-left: 2rem;"
+              <!-- <a href="#" style="color: #ccc; height: 2rem; margin-top: 3rem; margin-left: 2rem;"
    class="btn btn-light text-dark file-button text-white" id="file-button">
   <i class="fas fa-paperclip"></i>
 </a>
@@ -92,28 +94,59 @@
     console.error(error);
   });
 });
+</script> -->
+<!-- 
+<form method="post" enctype="multipart/form-data" id="upload-form" action="{% url 'upload_documents' expense_id=expense.id %}">
+  {% csrf_token %}
+  <label for="attachment" style="color: #ccc; height: 2rem;margin-top: 3rem;margin-left: 2rem; cursor: pointer;">
+    <i class="fas fa-paperclip"></i>
+   
+  </label>
+  <input type="file" name="attachment" id="attachment" onchange="handleFileSelection(event)" style="display: none;">
+  <button type="submit" style="display: none;">Upload</button>
+ 
+</form>
+
+<script>
+  function handleFileSelection(event) {
+    var input = event.target;
+    var form = document.getElementById('upload-form');
+    form.submit();
+  }
+</script> -->
+<form method="post" enctype="multipart/form-data" id="upload-form" action="{% url 'upload_documents' expense_id=expense.id %}">
+  {% csrf_token %}
+  <input type="file" name="attachment" id="attachment" onchange="handleFileSelection(event)" style="display: none;" >
+  <a href="#" class="btn btn-light text-dark file-button text-white" id="file-button" style="color: #ccc;height: 2rem;margin-top: -3.7rem;margin-left: 10rem;">
+    <i class="fas fa-paperclip"></i>
+  </a>
+</form>
+
+<script>
+  document.getElementById('file-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('attachment').click();
+  });
+
+  function handleFileSelection(event) {
+    var input = event.target;
+    var form = document.getElementById('upload-form');
+    form.submit();
+  }
 </script>
 
-
-              <a href="{% url 'dele' expense.id %}" style="color: #ccc;height: 2rem;margin-top: 3rem;margin-left: 2rem;"
+<a href="{% url 'dele' expense.id %}" style="color: #ccc;height: 2rem;margin-top: -6.7rem;margin-left: 5rem;"
                 class="btn btn-danger  text-white ">Delete</a>
-        
-                
-          </div>
-        </div>
-      
-        
-    
+
+</div></div>
+
    <div class="tabs" style="margin-top:2%;">
    <div class="tab-header">
 
-    <div class="active">
+    <div class="active" style="margin-left: -2rem;">
       <i class="fa fa code"></i>OverView
     </div></div>
-    <div class="tab-indicator"></div>
    
-  
-
      <style>
         .overview-container {
           display: grid;
@@ -191,7 +224,7 @@
           <p>{{expense.notes}}</p>
         </div>
       </div>
-    </section>     
+    </section> 
       
       
       

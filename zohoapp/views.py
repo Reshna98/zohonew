@@ -9,6 +9,9 @@ from django.contrib.auth import authenticate, login
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 
+from .models import Attach
+from django.contrib.auth.models import User
+from .models import Expense
 
 def index(request):
 
@@ -448,10 +451,8 @@ def save_expense(request):
             vendor=vendor_table.objects.get(vendor_display_name=v)
 
             # customer = addcustomer.objects.get(customer_id=c)
-            retags= request.POST.get('reporting_tags')
-            reporting_tags=retag.objects.get(reporting_tags=retags)
             taxamt = request.POST.get('taxamt', False)
-
+            # reporting_tags=request.post.get('retag')
             expense = Expense.objects.create(
                 user=request.user,
                 date=date,
@@ -462,7 +463,7 @@ def save_expense(request):
                 sac=sac,
                 expense_type=expense_type,
                 paid=paid,
-                
+                # reporting_tags=reporting_tags,
                 notes=notes,
                 hsn_code=hsn_code,
                 gst_treatment=gst_treatment,
@@ -471,7 +472,6 @@ def save_expense(request):
                 tax=tax,
                 invoice=invoice,
                 customer_name= customer,
-                reporting_tag=reporting_tags,
                 vendor=vendor
                 # attachment_file=attachment_file
             )
@@ -490,12 +490,20 @@ def save_expense(request):
             return render(request, 'addexpense.html', {'vendor':v,'customer': c, 'accounts': accounts, 'account_types': account_types,
             })
    
-def retags(request):
-    if request.method=='POST':
-        retag=request.POST.get('retag',None)
-        ptr=retag(retag)
-        ptr.save()
-        return redirect("entr_custmr")  
+def upload_documents(request, expense_id):
+    if request.method == 'POST':
+        user_id = request.user.id
+        user = User.objects.get(id=user_id)
+        expense = Expense.objects.get(id=expense_id)
+        attachment_file = request.FILES.get('attachment')
+
+        doc_data = Attach.objects.create(user=user, expense=expense, attachment=attachment_file)
+        doc_data.save()
+
+        return redirect("expense_details", pk=expense.pk)
+
+
+
 def add_accountE(request):
     accounts = Account.objects.all()
     account_types = set(Account.objects.values_list('type', flat=True))
@@ -527,32 +535,7 @@ def expense_details(request, pk):
     }
     return render(request, 'expenseview.html', context)
 
-# def entr_custmr(request):
-#     if request.method == 'POST':
-#         type = request.POST.get('type')
-#         txtFullName = request.POST['txtFullName']
-#         cpname = request.POST['cpname']
-#         email = request.POST.get('myEmail')
-#         wphone = request.POST.get('wphone')
-#         mobile = request.POST.get('mobile')
-#         skname = request.POST.get('skname')
-#         desg = request.POST.get('desg')
-#         dept = request.POST.get('dept')
-#         wbsite = request.POST.get('wbsite')
-#         u = User.objects.get(id=request.user.id)
 
-#         ctmr = addcustomer(
-#             customer_name=txtFullName, customerType=type,
-#             companyName=cpname, customerEmail=email, customerWorkPhone=wphone,
-#             customerMobile=mobile, skype=skname, designation=desg, department=dept,
-#             website=wbsite, user=u
-#         )
-
-#         ctmr.save()
-
-#         return redirect('save_expense')
-#     return render(request, 'addcustomer.html')
-    # return render(request, 'addcustomer.html')
 def entr_custmr(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -782,34 +765,31 @@ def edit_expense(request,expense_id):
 
             expense.save()
 
-            return redirect('expensepage')
+            return redirect('expense_details',pk=expense.pk)
         else:
-            # Display the edit_expense form
+           
             c = addcustomer.objects.all()
             v = vendor_table.objects.all()
             accounts = Account.objects.all()
             account_types = set(Account.objects.values_list('type', flat=True))
 
             return render(request, 'editexpense.html', {'vendor': v, 'customer': c, 'accounts': accounts, 'account_types': account_types, 'expense': expense})
-# def dele(request,id):
-#     dl=Expense.objects.get(id=id)
-#     dl.delete()
-#     return redirect('expense_details')
+
 def dele(request,id):
     items=Expense.objects.filter(id=id)
     items.delete()
     
     return redirect('expensepage')
-def attach(request,expense_id):
-    if request.method == 'POST' and request.FILES.get('attachment'):
-        uploaded_file = request.FILES['attachment']
-        expense = Expense.objects.get(id=expense_id)
-        expense.attachment = uploaded_file
-        expense.save()
+# def attach(request,expense_id):
+#     if request.method == 'POST' and request.FILES.get('attachment'):
+#         uploaded_file = request.FILES['attachment']
+#         expense = Expense.objects.get(id=expense_id)
+#         expense.attachment = uploaded_file
+#         expense.save()
     
-        context = {
-        'expense_id': expense_id,  # Pass the expense ID as a context variable
-    }
+#         context = {
+#         'expense_id': expense_id,  
+#     }
     
 
-    return render(request, 'expense_details.html', context)
+#     return render(request, 'expense_details.html', context)

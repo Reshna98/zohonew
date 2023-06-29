@@ -7,10 +7,39 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <style>
-    .col-form-label {
-  
-    margin-right: 5px; 
-  }
+.popup{
+  height: 30rem;
+  width: 40rem;
+  background-color: rgb(228, 248, 248);
+  border-radius: 1rem;
+  position: absolute;
+  top: -15%;
+  left: 40%;
+  transform: translate(-50%,-50%)scale(0.1);
+  text-align: center;
+  padding: 0 5rem 5 rem;
+  color: black;
+  top: 50%;
+  visibility: hidden;
+  transform: translate(-50%,-50%)scale(0.1);
+
+}
+
+.open-popup{
+  top: 50%;
+  visibility: visible;
+  transform: translate(-50%,-50%)scale(1);
+  transition: transform 0.4s ,top 0.4s;
+
+}
+.open-popup-1{
+  top: 50%;
+  visibility: visible;
+  transform: translate(-50%,-50%)scale(1);
+  transition: transform 0.4s ,top 0.4s;
+  height: 200px;
+
+}
 .popup{
   background-color: black;
   
@@ -34,14 +63,14 @@
       {% csrf_token %}
       <div style="height: 400px; width:1100px; overflow-y: scroll;padding-left: 10%;">
         <div class="form-group row">
-          <label for="date" class="col-sm-2 col-form-label">Date</label>
-          <div class="col-sm-10">
+          <label for="date" class="col-sm-3 col-form-label">Date</label>
+          <div class="col-sm-9">
             <input type="date" class="form-control" id="date" name="date">
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label"> Expense Account</label>
-          <div class="col-sm-10">
+          <label class="col-sm-3 col-form-label"> Expense Account</label>
+          <div class="col-sm-9">
             <select class="form-control form-select" id="select" name="select" onchange="openpopup(this);" required>
             
               <option value="">-- Select Expense Account --</option>
@@ -65,25 +94,26 @@
       
         
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Expense Type</label>
-        <div class="col-sm-10" style="color: white;">
+        <label class="col-sm-3 col-form-label">Expense Type</label>
+        <div class="col-sm-9" style="color: white;">
           <input type="radio" name="expense_type" value="goods" onclick="toggleSelects()">Goods
           <input type="radio" name="expense_type" value="service" onclick="toggleSelects()">Service
         </div>
       </div>
     
       <div class="form-group row" id="hsn_div" style="display: none;">
-        <label id="hsn_label" for="hsn_code" class="col-sm-2 col-form-label">HSN</label>
-        <div class="col-sm-10">
+        <label id="hsn_label" for="hsn_code" class="col-sm-3 col-form-label">HSN</label>
+        <div class="col-sm-9">
           <input type="text" id="hsn_code" name="hsn_code" class="form-control">
         </div>
       </div>
-      <div class="form-group row" id="sac_div" style="display:block;">
-        <label id="sac_label" for="sac" class="col-sm-2 col-form-label">SAC</label>
-        <div class="col-sm-10">
-          <input type="text" id="sac" name="sac" class="form-control">
+      <div class="form-group row" id="sac_div" style="display:flex;">
+        <label id="sac_label" for="sac" class="col-sm-3 col-form-label">SAC</label>
+        <div class="col-sm-9">
+          <input type="text" id="sac" name="sac" class="form-control" >
         </div>
       </div>
+      
       <script>
       function toggleSelects() {
         var radio = document.querySelector('input[name="expense_type"]:checked');
@@ -93,7 +123,7 @@
         var select2_label = document.getElementById("sac_label");
     
         if (radio.value === "goods") {
-          select1_div.style.display = "block";
+          select1_div.style.display = "flex";
           select2_div.style.display = "none";
           select1_label.setAttribute("for", "sac");
           select2_label.setAttribute("for", "hsn_code");
@@ -101,7 +131,7 @@
           document.getElementById("sac").name = "hsn_code";
         } else {
           select1_div.style.display = "none";
-          select2_div.style.display = "block";
+          select2_div.style.display = "flex";
           select1_label.setAttribute("for", "hsn_code");
           select2_label.setAttribute("for", "sac");
           document.getElementById("hsn_code").name = "hsn_code";
@@ -118,14 +148,14 @@
       window.addEventListener('load', setDefaultSelection);
       </script>
       <div class="form-group row">
-        <label for="notes" class="col-sm-2 col-form-label">Notes</label>
-        <div class="col-sm-10">
+        <label for="notes" class="col-sm-3 col-form-label">Notes</label>
+        <div class="col-sm-9">
           <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
         </div>
       </div>
       <div class="form-group row">
-        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-        <div class="col-sm-10">
+        <label for="amount" class="col-sm-3 col-form-label">Amount</label>
+        <div class="col-sm-9">
           <div class="input-group">
             <div class="input-group-append">
               <select class="form-control" id="currency" name="currency">
@@ -147,8 +177,8 @@
       </div>
       
         <div class="form-group row">
-          <label for="paid" class="col-sm-2 col-form-label">Paid Through</label>
-          <div class="col-sm-10">
+          <label for="paid" class="col-sm-3 col-form-label">Paid Through</label>
+          <div class="col-sm-9">
             <select class="form-control select2" id="paid" name="paid">
               <option value="">-- Select Expense Account --</option>
               <optgroup label="Bank">
@@ -187,8 +217,8 @@
           </div>
         </div> -->
         <div class="form-group row">
-          <label for="vendor" class="col-sm-2 col-form-label">Vendor</label>
-          <div class="col-sm-10">
+          <label for="vendor" class="col-sm-3 col-form-label">Vendor</label>
+          <div class="col-sm-9">
             <select class="form-control select2" id="vendor" name="vendor"onchange="handleSelectChangev(this);">
               <option value="">-- Select a vendor --</option>
               {% for v in vendor %}
@@ -209,8 +239,8 @@
 </script>
         
         <div class="form-group row">
-          <label for="gst_treatment" class="col-sm-2 col-form-label">GST Treatment</label>
-          <div class="col-sm-10">
+          <label for="gst_treatment" class="col-sm-3 col-form-label">GST Treatment</label>
+          <div class="col-sm-9">
             <select class="form-control select2" id="gst_treatment" name="gst_treatment">
               <option value="">-- Select GST Treatment --</option>
               <option value="Registered business-
@@ -233,8 +263,8 @@
         </div>
         
         <div class="form-group row">
-          <label for="destination_of_supply" class="col-sm-2 col-form-label">Destination of Supply</label>
-          <div class="col-sm-10">
+          <label for="destination_of_supply" class="col-sm-3 col-form-label">Destination of Supply</label>
+          <div class="col-sm-9">
             <select class="form-control select2" id="destination_of_supply" name="destination_of_supply">
               <option value="">-- Select Destination State --</option>
               <option value="AN">Andaman and Nicobar Islands (AN)</option>
@@ -278,14 +308,14 @@
         
         
         <div class="form-group row">
-          <label for="invoice" class="col-sm-2 col-form-label">Invoice</label>
-          <div class="col-sm-10">
+          <label for="invoice" class="col-sm-3 col-form-label">Invoice</label>
+          <div class="col-sm-9">
             <input type="text" class="form-control" id="invoice" name="invoice">
           </div>
         </div>
         <div class="form-group row">
-          <label for="tax" class="col-sm-2 col-form-label">Tax</label>
-          <div class="col-sm-10">
+          <label for="tax" class="col-sm-3 col-form-label">Tax</label>
+          <div class="col-sm-9">
             <select class="form-control select2" id="tax" name="tax">
               <option value="">-- Select Tax --</option>
               <option value="">Non-Taxable</option>
@@ -321,8 +351,8 @@
          
           
            <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Customer</label>
-            <div class="col-sm-10">
+            <label for="customer" class="col-sm-3 col-form-label">Customer</label>
+            <div class="col-sm-9">
               <select class="form-control select2" id="customer" name="customer"onchange="handleSelectChange(this);">
                 <option value="">-- Select a customer --</option>
                 {% for cust in customer %}
@@ -349,40 +379,14 @@
       <!-- </div> -->
     
       <div class="form-group row">
-        <label for="reporting_tags" class="col-sm-2 col-form-label">Reporting Tags:</label>
-        <div class="col-sm-10">
+        <label for="reporting_tags" class="col-sm-3 col-form-label">Reporting Tags:</label>
+        <div class="col-sm-9">
           <input type="hidden" class="form-control" id="reporting_tags" name="reporting_tags">
           <span id="reporting_tags_label"></span>
           <a href="#" class="associate-tag-link" onclick="openPopup2()">+ Associate Tag</a>
         </div>
       </div>
-      <div class="popup" id="popup2">
-        <div style="margin-top: 4rem;" class="display-flex">
-          <h4 class="text-white">Add Tag</h4>
-          <h6 class="float-right text-white" style="margin-right: 1rem; margin-top: -2rem;" onclick="closePopup2()">X</h6>
-        </div>
-        <form action="{% url 'retags' %}" method="post">
-          {% csrf_token %}
-          <label class="text-white" for="retag">Reporting Tag</label> <br>
-          <input  type="text" name="retag" id="retag"> <br>
-         
-          <input style="width: 5rem; height: 2rem; color: black;" class="btn btn-success" type="submit" value="Submit">
-          <button style="width: 5rem; height: 2rem; color: black;" class="btn btn-secondary" type="button" onclick="closePopup2()">Cancel</button>
-        </form>
-      </div>
-      
-      <script>
-        let popup2 = document.getElementById("popup2");
-      
-        function openPopup2() {
-          popup2.classList.add("open-popup");
-        }
-      
-        function closePopup2() {
-          popup2.classList.remove("open-popup");
-        }
-      </script>
-      
+    
 
     
     <div class="col-sm-10 offset-sm-2">
@@ -433,6 +437,31 @@
   }
 
 </script>
+<div class="popup" id="popup2">
+  <div style="margin-top: 4rem;" class="display-flex">
+    <h4 class="text-white">Associate tag</h4>
+    <h6 class="float-right text-white" style="margin-right: 1rem; margin-top: -2rem;" onclick="closePopup2()">X</h6>
+  </div>
+ 
+  
+  <p style="color: white;">
+    Create/Update reporting_tags under settings
+  </p>
+  
+</div>
+
+<script>
+  let popup2 = document.getElementById("popup2");
+
+  function openPopup2() {
+    popup2.classList.add("open-popup-1");
+  }
+
+  function closePopup2() {
+    popup2.classList.remove("open-popup-1");
+  }
+</script>
+
 
 {%endblock%}
 
