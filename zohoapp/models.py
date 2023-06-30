@@ -202,7 +202,7 @@ class Expense(models.Model):
     date = models.DateField()
     sac=models.TextField(max_length=255)
     taxamt=models.TextField(max_length=255)
-    # attachment = models.FileField(upload_to='expense_attachments/', blank=True, null=True)
+    image = models.FileField(upload_to='expense_image/', blank=True, null=True)
 class Attach(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='')
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, null=True)

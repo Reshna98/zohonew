@@ -420,7 +420,7 @@ def expensepage(request):
 def save_expense(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            # Handle expense form submission
+           
             date = request.POST.get('date')
             select = request.POST['select']
             expense_account = Account.objects.get(id=select)
@@ -453,9 +453,17 @@ def save_expense(request):
             # customer = addcustomer.objects.get(customer_id=c)
             taxamt = request.POST.get('taxamt', False)
             # reporting_tags=request.post.get('retag')
+            image = request.FILES.get('image')
+            # if 'image' in request.FILES:
+            #     image = request.FILES['image']  # Set the uploaded image
+            # else:
+            #     image = None  
+
+
             expense = Expense.objects.create(
                 user=request.user,
                 date=date,
+                image=image,
                 expense_account=expense_account,
                 amount=amount,
                 currency=currency,
@@ -743,7 +751,11 @@ def edit_expense(request,expense_id):
             vendor = vendor_table.objects.get(vendor_display_name=v)
             reporting_tags = request.POST.get('reporting_tags')
             taxamt = request.POST.get('taxamt', False)
-
+            image = request.FILES.get('image')
+            # if 'image' in request.FILES:
+            #     image = request.FILES['image']  # Set the uploaded image
+            # else:
+            #     image = None 
             expense.date = date
             expense.expense_account = expense_account
             expense.amount = amount
@@ -762,7 +774,7 @@ def edit_expense(request,expense_id):
             expense.customer_name = customer
             expense.reporting_tags = reporting_tags
             expense.vendor = vendor
-
+            expense.image=image
             expense.save()
 
             return redirect('expense_details',pk=expense.pk)

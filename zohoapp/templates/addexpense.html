@@ -26,11 +26,11 @@
 }
 
 .open-popup{
-  top: 50%;
+  top: 60%;
   visibility: visible;
   transform: translate(-50%,-50%)scale(1);
   transition: transform 0.4s ,top 0.4s;
-
+  border: 1px solid #fdae03;
 }
 .open-popup-1{
   top: 50%;
@@ -38,6 +38,7 @@
   transform: translate(-50%,-50%)scale(1);
   transition: transform 0.4s ,top 0.4s;
   height: 200px;
+  border: 1px solid #fdae03;
 
 }
 .popup{
@@ -59,7 +60,7 @@
 </style>
 <div class="row fixed-top" style="top: 7rem;margin-left: 14rem;">
   <div class="col-md-10">
-    <form action="{% url 'save_expense' %}" method="post">
+    <form action="{% url 'save_expense' %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div style="height: 400px; width:1100px; overflow-y: scroll;padding-left: 10%;">
         <div class="form-group row">
@@ -71,7 +72,7 @@
         <div class="form-group row">
           <label class="col-sm-3 col-form-label"> Expense Account</label>
           <div class="col-sm-9">
-            <select class="form-control form-select" id="select" name="select" onchange="openpopup(this);" required>
+            <select class="form-control form-select select2" id="select" name="select" onchange="openpopup(this);" required>
             
               <option value="">-- Select Expense Account --</option>
               {% for account_type in account_types %}
@@ -180,7 +181,7 @@
           <label for="paid" class="col-sm-3 col-form-label">Paid Through</label>
           <div class="col-sm-9">
             <select class="form-control select2" id="paid" name="paid">
-              <option value="">-- Select Expense Account --</option>
+              <option value="">-- Select Paid Through --</option>
               <optgroup label="Bank">
                 <option value="credit card">Credit Card</option>
                 <option value="debit card">Debit Card</option>
@@ -224,7 +225,7 @@
               {% for v in vendor %}
               <option value="{{ v.vendor_display_name}}">{{v.vendor_display_name }}</option>
                {% endfor %}
-          <option value="new">Register as a vendor</option>
+          <option value="new">+New vendor</option>
             </select>
           </div>
         </div>
@@ -305,7 +306,19 @@
             </select>
           </div>
         </div>
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Reverse Charge:</label>
+          <div class="col-sm-9">
+            <div class="form-check">
+              <input type="checkbox" name="reverse_charge" id="reverse_charge" value="1">
         
+              <label class="form-check-label" for="reverse_charge">
+                This transaction is applicable for reverse charge
+              </label>
+            </div>
+          </div>
+        </div>
+         
         
         <div class="form-group row">
           <label for="invoice" class="col-sm-3 col-form-label">Invoice</label>
@@ -358,7 +371,7 @@
                 {% for cust in customer %}
                 <option value="{{ cust.customer_name }}">{{ cust.customer_name }}</option>
                  {% endfor %}
-            <option value="new">Register as a customer</option>
+            <option value="new">+New customer</option>
               
               </select>
             </div>
@@ -386,8 +399,81 @@
           <a href="#" class="associate-tag-link" onclick="openPopup2()">+ Associate Tag</a>
         </div>
       </div>
+      <!-- <div class="row"> -->
+        <div class="col-sm-9">
+          <!-- Image Box -->
+          <div id="attached-image-box" style="width: 150px; height: 150px; border: 1px dotted #ffffff; margin-bottom: 10px; position: relative; overflow: hidden;">
+            <img id="attached-image" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+            <div id="image-footer" style="position: absolute; bottom: 0; width: 100%; background-color: rgba(0, 0, 0, 0.5); padding: 5px; display: none;">
+              <i id="delete-icon" class="fas fa-times-circle text-danger" style="cursor: pointer; display: none;"></i>
+            </div>
+          </div>
+        </div>
+       <!-- </div> -->
     
-
+      <!-- <div class="row"> -->
+        <div class="col-sm-12">
+          <!-- Attach Button -->
+          <button type="button" id="attach-button" class="btn btn-secondary btn-sm" style="width: 15.5%;">
+            <i class="fas fa-paperclip"></i> Attach Receipt
+          </button>
+        </div>
+        <div class="col-sm-9 text-right">
+          <!-- Delete Button -->
+          <button type="button" id="delete-button" class="btn btn-danger btn-sm" style="display: none;">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      <!-- </div> -->
+<!--     
+      <div class="row"> -->
+        <div class="col-sm-6">
+          <input type="file" name="image" id="image" style="display: none;">
+        </div>
+      <!-- </div> -->
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    <script>
+      //  to handle file selection and image preview
+    
+      // Get references to elements
+      const attachedImageBox = document.getElementById('attached-image-box');
+      const attachedImage = document.getElementById('attached-image');
+      const imageFooter = document.getElementById('image-footer');
+      const deleteIcon = document.getElementById('delete-icon');
+      const attachButton = document.getElementById('attach-button');
+      const deleteButton = document.getElementById('delete-button');
+      const imageInput = document.getElementById('image');
+      const imageActions = document.getElementById('image-actions');
+    
+      // Attach button click event listener
+      attachButton.addEventListener('click', function() {
+        imageInput.click(); // Open file dialog
+      });
+    
+      // Image input change event listener
+      imageInput.addEventListener('change', function() {
+        if (imageInput.files && imageInput.files[0]) {
+          const reader = new FileReader();
+    
+          reader.onload = function(e) {
+            const imageURL = e.target.result;
+            attachedImage.src = imageURL; // Display the selected image
+            imageFooter.style.display = 'block'; // Show the image footer
+            deleteIcon.style.display = 'inline'; // Show the delete icon
+          };
+    
+          reader.readAsDataURL(imageInput.files[0]);
+        }
+      });
+    
+      // Delete image footer button click event listener
+      deleteIcon.addEventListener('click', function() {
+        attachedImage.src = ''; // Reset the image source
+        imageInput.value = ''; // Clear the selected file
+        imageFooter.style.display = 'none'; // Hide the image footer
+        deleteIcon.style.display = 'none'; // Hide the delete icon
+      });
+    </script>
     
     <div class="col-sm-10 offset-sm-2">
         <button type="submit" class="btn btn-primary">Submit</button>
