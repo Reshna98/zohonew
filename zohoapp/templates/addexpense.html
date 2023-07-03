@@ -509,6 +509,28 @@
     </form>
   </div>
 <script>
+  $(document).on("click","#save_expense",function(){
+  $.ajax({
+    
+    type : 'POST',
+    url:"{% url 'add_accountE' %}",
+
+    data:{
+        title : $("#type").val(),
+        firstname : $("#name").val(),
+        lastname : $("#pname").val(),
+        company_name : $("#code").val(),
+        display_name : $('#description').text(),
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+        
+      },
+    
+      success: function(response) {
+        document.getElementById("popup").reset();
+        reloadVendor();
+      },
+  });        
+});
   let popup = document.getElementById("popup");
   let select = document.getElementById("select");
 
