@@ -72,6 +72,7 @@ class History(models.Model):
     message=models.CharField(max_length=255)
     p=models.ForeignKey(AddItem,on_delete=models.CASCADE)
 class Account(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name=models.CharField(max_length=255)
     pname=models.CharField(max_length=255)
     code=models.CharField(max_length=255)

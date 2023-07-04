@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 
 from .models import Attach
 from django.contrib.auth.models import User
@@ -510,9 +511,9 @@ def upload_documents(request, expense_id):
 
         return redirect("expense_details", pk=expense.pk)
 
-
-
 def add_accountE(request):
+    user = User.objects.get(id=request.user.id)
+
     accounts = Account.objects.all()
     account_types = set(Account.objects.values_list('type', flat=True))
     if request.method == 'POST':
@@ -521,15 +522,29 @@ def add_accountE(request):
         code = request.POST.get('code')
         pname = request.POST.get('pname')
         description=request.POST.get('description')
-        new_account = Account(type=type,name=name,code=code,pname=pname,description=description)
+        new_account = Account(user=user,type=type,name=name,code=code,pname=pname,description=description)
+        account_dropdown(request)
         new_account.save()
         # accounts = Account.objects.all()
-
+    return HttpResponse('Account saved successfully')
     return render(request, 'addexpense.html', {
         'accounts': accounts,
         'account_types': account_types,
     })
-        
+
+def account_dropdown(request):
+    user = User.objects.get(id=request.user.id)
+
+    options = {}
+    account_objects = Account.objects.filter(user=user)
+    for account in account_objects:
+        # options[account.id] = account.name
+        options[account.id] = {
+            'name': account.name,
+            'type': account.type
+        }
+
+    return JsonResponse(options)      
        
 
 

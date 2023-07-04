@@ -34,5 +34,5 @@ urlpatterns = [
     path('dele/<int:id>',views.dele,name='dele'),
     # path('attach/<int:expense_id>',views.attach,name='attach'),
     path('upload_documents/<int:expense_id>',views.upload_documents,name='upload_documents'),
-
+     path('account_dropdown', views.account_dropdown, name='account_dropdown'),
 ]

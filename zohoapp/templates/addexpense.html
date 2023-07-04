@@ -487,7 +487,7 @@
 <script>
   $('.select2').select2();
   </script>
-  <div class="popup" id="popup">
+  <!-- <div class="popup" id="popup">
     <div style="margin-top: 4rem;" class="display-flex">
       <h4 class="text-white">Add Account</h4>
       <h6 class="float-right text-white" style="margin-right: 1rem; margin-top: -2rem;" onclick="closepopup()">X</h6>
@@ -509,28 +509,7 @@
     </form>
   </div>
 <script>
-  $(document).on("click","#save_expense",function(){
-  $.ajax({
-    
-    type : 'POST',
-    url:"{% url 'add_accountE' %}",
-
-    data:{
-        title : $("#type").val(),
-        firstname : $("#name").val(),
-        lastname : $("#pname").val(),
-        company_name : $("#code").val(),
-        display_name : $('#description').text(),
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-        
-      },
-    
-      success: function(response) {
-        document.getElementById("popup").reset();
-        reloadVendor();
-      },
-  });        
-});
+  
   let popup = document.getElementById("popup");
   let select = document.getElementById("select");
 
@@ -544,7 +523,113 @@
       popup.classList.remove("open-popup");
   }
 
-</script>
+</script> -->
+<div class="popup" id="popup">
+  <div style="margin-top: 4rem;" class="display-flex">
+    <h4 class="text-white">Add Account</h4>
+    <h6 class="float-right text-white" style="margin-right: 1rem; margin-top: -2rem;" onclick="closepopup()">X</h6>
+  </div>
+  <form action="{% url 'add_accountE' %}" method="post" id="accountForm">
+    {% csrf_token %}
+    <label class="text-white">Account type</label> <br>
+    <input required type="text" name="type" id="type"> <br>
+    <label class="text-white">Account Name</label> <br>
+    <input required type="text" name="name" id="name"> <br>
+    <label class="text-white">Parent name</label> <br>
+    <input type="text" name="pname" id="pname"> <br>
+    <label class="text-white">Account Code</label> <br>
+    <input type="text" name="code" id="code"> <br>
+    <label class="text-white">Account Description</label> <br>
+    <input type="text" name="description" id="description"> <br> <br>
+    <input style="width: 5rem; height: 2rem; color: black;" class="btn btn-success" type="submit" id="save_expense" value="Submit">
+    <button style="width: 5rem; height: 2rem; color: black;" class="btn btn-secondary" type="button" onclick="closepopup()">Cancel</button>
+  </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+  let popup = document.getElementById("popup");
+  let select = document.getElementById("select");
+
+  function openpopup(select) {
+    if (select.value === "new") {
+      popup.classList.add("open-popup");
+    }
+  }
+
+  function closepopup() {
+    popup.classList.remove("open-popup");
+  }
+
+  $(document).on("click", "#save_expense", function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    $.ajax({
+      type: "POST",
+      url: "{% url 'add_accountE' %}",
+      data: {
+        type: $("#type").val(),
+        name: $("#name").val(),
+        pname: $("#pname").val(),
+        code: $("#code").val(),
+        description: $("#description").val(),
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+      },
+      success: function(response) {
+        document.getElementById("accountForm").reset();
+        closepopup(); 
+        
+ 
+
+  
+       
+
+        reloadExpenseAccounts();
+      },
+    });
+  });
+
+function reloadExpenseAccounts() {
+  $.ajax({
+    url: "{% url 'account_dropdown' %}",
+    type: "GET",
+    dataType: "json",
+    success: function(data) {
+      var dropdown = $('#select');
+      var newAccountName = $("#name").val();
+      dropdown.empty();
+      dropdown.append('<option value="">-- Select Expense Account --</option>');
+
+      $.each(data, function(key, value) {
+      var accountType = value.type; // Get the account type from the data
+
+      var option = $('<option></option>').attr('value', key).text(value.name); // Create the <option> element for the account
+
+  // Find the existing <optgroup> for the account type
+      var optgroup = dropdown.find('optgroup[label="' + accountType + '"]');
+
+  // If the <optgroup> doesn't exist, create a new one
+      if (optgroup.length === 0) {
+        optgroup = $('<optgroup></optgroup>').attr('label', accountType); // Create the <optgroup> element
+        dropdown.append(optgroup); // Append the <optgroup> to the dropdown
+  }
+
+  optgroup.append(option); // Append the <option> to the <optgroup>
+});
+
+      dropdown.append('<option value="new" style="color: blue;">New Account</option>');
+      dropdown.val(newAccountName);
+    },
+    error: function(xhr, status, error) {
+      console.error(xhr.responseText);
+    }
+  });
+}
+
+reloadExpenseAccounts();
+</script> 
+</div> 
 <div class="popup" id="popup2">
   <div style="margin-top: 4rem;" class="display-flex">
     <h4 class="text-white">Associate tag</h4>
