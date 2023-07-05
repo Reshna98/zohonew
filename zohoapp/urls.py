@@ -35,4 +35,5 @@ urlpatterns = [
     # path('attach/<int:expense_id>',views.attach,name='attach'),
     path('upload_documents/<int:expense_id>',views.upload_documents,name='upload_documents'),
      path('account_dropdown', views.account_dropdown, name='account_dropdown'),
+     path('vendor_dropdown', views.vendor_dropdown, name='vendor_dropdown'),
 ]

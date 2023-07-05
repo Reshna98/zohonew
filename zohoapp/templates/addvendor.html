@@ -13,7 +13,7 @@
           <div style="height: 600px;overflow-y: scroll;">
              <h3  class="mb-3  text-white " style="font-size: 2rem;">New Vendor</h3><br>     
       
-            <form  method="post" action="{% url 'add_vendor' %}"  enctype="multipart/form-data" class="">
+            <form  method="post" action="{% url 'add_vendor' %}"  enctype="multipart/form-data" class="" id="Vendor">
               {% csrf_token %}
               
               
@@ -48,7 +48,7 @@
                <div class="form-group row mt-4">
                    <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Company Name</label></div>
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                        <input  type="text" class="form-control" name="company_name" required>     
+                        <input  type="text" class="form-control" name="company_name" id="company_name" required>     
                         <div class="invalid-feedback">Please fill out this field.</div>   
  
                     </div>
@@ -59,7 +59,7 @@
                     <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Vendor Display Name</label></div>
                      <div class="col-sm-12 col-md-6 col-lg-6">
                         
-                            <select  name="v_display_name" class="form-control" onclick="vendor_display()">
+                            <select  name="vendor_display_name" class="form-control" onclick="vendor_display()">
                             <option id="select2"></option>
                                 
                             </select> 
@@ -73,10 +73,8 @@
                             var x=document.getElementById("select1").value;
                             var y=document.getElementById("fname").value;
                             var z=document.getElementById("lname").value;
-
+                 
                             document.getElementById("select2").innerHTML=x+" "+y+" "+z
-                           
-                            
                         }
                      </script>
  
@@ -86,7 +84,7 @@
                  <div class="form-group row mt-4">
                     <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Vendor Email</label></div>
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                         <input  type="email" class="form-control" name="vendor_email" required> 
+                         <input  type="email" class="form-control" name="vendor_email" id="vendor_email" required> 
                          <div class="invalid-feedback">Please fill out this field.</div>   
      
                      </div>
@@ -143,7 +141,7 @@
                         <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Skype name/Number</label></div>
                        
                          <div class="col-sm-12 col-md-6 col-lg-6">
-                           <input  type="text" class="form-control" name="skype_number">      
+                           <input  type="text" class="form-control" name="skype_number" id="skype_number">      
                          </div>
                          
      
@@ -154,7 +152,7 @@
                     <div class="form-group row mt-4">
                         <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Designation</label></div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                             <input  type="text" class="form-control" name="designation">      
+                             <input  type="text" class="form-control" name="designation" id="designation">      
                          </div>
      
      
@@ -162,7 +160,7 @@
                     <div class="form-group row mt-4">
                         <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Department</label></div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
-                             <input  type="text" class="form-control" name="department">      
+                             <input  type="text" class="form-control" name="department" id="department">      
                          </div>
      
      
@@ -308,7 +306,7 @@
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" style="color:rgb(214, 75, 75) ;"> Currency*</label>
                      
                     <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <select name="currency" id="PLACE" class="form-control">
+                        <select name="currency" id="currency" class="form-control">
                             <option value="Indian Rupee" selected>Indian Rupee</option>
                             <option value="Indian Rupee">Indian Rupee</option>
                   
@@ -322,7 +320,7 @@
                 <div class="form-group row mt-4">
                     <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Opening Balance</label>                    
                     <div class=" col-sm-12 col-md-3 col-lg-3">
-                        <input  type="number" class="form-control" name="opening_bal">      
+                        <input  type="number" class="form-control" name="opening_bal" id="opening_bal">      
                     </div>
                 </div>
 
@@ -413,7 +411,7 @@
                             <div class="form-group row mt-4">
                                 <label class="col-sm-12 col-md-3 col-lg-3 col-form-label" > Phone </label>                    
                                 <div class=" col-sm-12 col-md-6 col-lg-6">
-                                    <input id="bphone_num"  type="number" class="form-control" name="bphone" >
+                                    <input id="bphone_num"  type="number" class="form-control" name="bphone" id="bphone">
                                     <label for="" id="bphone_label"></label>      
                                 </div>
                             </div>
@@ -566,7 +564,7 @@
                     <div class="col-sm-12 col-md-8 col-lg-8">
                         <div class="form-group row mt-4">
                             <div class=" col-sm-12 col-md-6 col-lg-6">
-                                <textarea class="bg-dark" style="border: none;color: white;" cols="70" rows="4" name="remark"></textarea>
+                                <textarea id="remarkTextarea" class="bg-dark" style="border: none;color: white;" cols="70" rows="4" name="remark"></textarea>
                             </div>
                         </div>
                     </div>
@@ -580,7 +578,7 @@
             
             <div class="row mt-4">
                 <div class="col-sm-12 col-md-2 col-lg-2">
-                    <input type="submit" class="form-control btn-outline-warning" value="save">
+                    <input type="submit" class="form-control btn-outline-warning" value="save" id="Vendorsave">
                     <!-- <a href="{% url 'add_vendor' %}" role="button" class="form-control"></a> -->
                     <!-- <button type="submit">save</button> -->
                 </div>
@@ -609,7 +607,9 @@
 
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
 <script>
     function gstPan_function(){
         var x=document.getElementById('GSTT').value
@@ -960,12 +960,101 @@
 
       }
 
+$(document).on("click", "#Vendorsave", function(e) {
+        e.preventDefault();  
+        
+  $.ajax({
+    type: 'POST',
+    url: "{% url 'add_vendor' %}",
 
-      
+    data: {
+      salutation: $("#select1").val(),
+    //   salutation: $("#salutation").val(),
+      first_name: $("#fname").val(),
+      last_name: $("#lname").val(),
+      company_name: $("#company_name").val(),
+    //   vendor_display_name: $("#select2").val(),
+      vendor_display_name: x + " " + y + " " + z,
 
+      vendor_email: $("#vendor_email").val(),
+      website: $("#web").val(),
+      vendor_wphone: $("#workphone").val(),
+      vendor_mphone: $("#mphone").val(),
+      skype_number: $("#skype_number").val(),
+      designation: $("#designation").val(),
+      department: $("#department").val(),
+      gst_treatment: $("#GSTT").val(),
+      gst_number: $("#gst_input").val(),
+      pan_number: $("#pan_input").val(),
+      source_supply: $("#PLACE").val(),
+      currency: $("#currency").val(),
+      opening_bal: $("#opening_bal").val(),
+      payment_terms: $("#PLACE").val(),
+      battention: $("#batten").val(),
+      bcountry: $("#btry").val(),
+      baddress: $("#badd1").val(),
+      bcity: $("#bcty").val(),
+      bstate: $("#bste").val(),
+      bzip: $("#bzp").val(),
+      bphone: $("#bphone").val(),
+      bfax: $("#bfax").val(),
+      sattention: $("#satten").val(),
+      scountry: $("#sctry").val(),
+      saddress: $("#sadd1").val(),
+      scity: $("#scity").val(),
+      sstate: $("#sste").val(),
+      szip: $("#szp").val(),
+      sphone: $("#sphone").val(),
+      sfax: $("#sfx").val(),
+      salutation_person: $("select[name='salutation[]']").map(function() { return $(this).val(); }).get(),
+      first_name_person: $("input[name='first_name[]']").map(function() { return $(this).val(); }).get(),
+      last_name_person: $("input[name='last_name[]']").map(function() { return $(this).val(); }).get(),
+      email_person: $("input[name='email[]']").map(function() { return $(this).val(); }).get(),
+      work_phone_person: $("input[name='wphone[]']").map(function() { return $(this).val(); }).get(),
+      mobile_person: $("input[name='mobile[]']").map(function() { return $(this).val(); }).get(),
+      skype_person: $("input[name='skype[]']").map(function() { return $(this).val(); }).get(),
+      designation_person: $("input[name='designation[]']").map(function() { return $(this).val(); }).get(),
+      department_person: $("input[name='department[]']").map(function() { return $(this).val(); }).get(),
+      remarkTextarea:$("remarkTextarea").val,
+      csrfmiddlewaretoken: '{{ csrf_token }}'
      
-</script>
 
+    },
+
+    success: function(response) {
+      $("#Vendor").trigger("reset");
+      reloadVendordrop();
+      redirectToSaveExpense();
+    },
+  });
+});
+
+function redirectToSaveExpense() {
+    window.location.href =  "{% url 'save_expense' %}";
+  }
+function reloadVendordrop() {
+  $.ajax({
+    type: 'GET',
+    url: "{% url 'vendor_dropdown' %}",
+    success: function(response) {
+      // Clear existing options
+      $("#vendor").empty();
+
+      // Add default option
+      $("#vendor").append('<option value="">-- Select a vendor --</option>');
+
+      // Add vendor options
+      for (var i = 0; i < response.length; i++) {
+        var vendor = response[i];
+        $("#vendor").append('<option value="' + vendor.id + '">' + vendor.display_name + '</option>');
+      }
+
+      // Add New Vendor option
+      $("#vendor").append('<option value="new">+ New vendor</option>');
+    },
+  });
+}
+</script>
 
 
 {% endblock %}
