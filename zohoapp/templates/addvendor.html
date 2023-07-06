@@ -59,7 +59,7 @@
                     <div class="col-sm-12 col-md-3 col-lg-3 col-form-label"><label>Vendor Display Name</label></div>
                      <div class="col-sm-12 col-md-6 col-lg-6">
                         
-                            <select  name="vendor_display_name" class="form-control" onclick="vendor_display()">
+                            <select  name="v_display_name" class="form-control" onclick="vendor_display()">
                             <option id="select2"></option>
                                 
                             </select> 
@@ -605,8 +605,6 @@
      
 
 
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     
@@ -962,16 +960,23 @@
 
 $(document).on("click", "#Vendorsave", function(e) {
         e.preventDefault();  
+    var x = $("#select1").val();
+    var y = $("#fname").val();
+    var z = $("#lname").val();
+    console.log("Button clicked");
+    console.log("x value:", x);
+    console.log("y value:", y);
+    console.log("z value:", z);
         
   $.ajax({
     type: 'POST',
     url: "{% url 'add_vendor' %}",
 
     data: {
-      salutation: $("#select1").val(),
+      salutation:x,
     //   salutation: $("#salutation").val(),
-      first_name: $("#fname").val(),
-      last_name: $("#lname").val(),
+      first_name:y,
+      last_name: z,
       company_name: $("#company_name").val(),
     //   vendor_display_name: $("#select2").val(),
       vendor_display_name: x + " " + y + " " + z,
@@ -1022,15 +1027,19 @@ $(document).on("click", "#Vendorsave", function(e) {
     },
 
     success: function(response) {
+      console.log("Ajax request successful");
       $("#Vendor").trigger("reset");
       reloadVendordrop();
       redirectToSaveExpense();
     },
+    error: function(xhr, status, error) {
+            console.log("Ajax request failed");
+            console.log("Error:", error);}
   });
 });
 
 function redirectToSaveExpense() {
-    window.location.href =  "{% url 'save_expense' %}";
+    window.location.href = "{% url 'save_expense' %}";
   }
 function reloadVendordrop() {
   $.ajax({
@@ -1046,7 +1055,7 @@ function reloadVendordrop() {
       // Add vendor options
       for (var i = 0; i < response.length; i++) {
         var vendor = response[i];
-        $("#vendor").append('<option value="' + vendor.id + '">' + vendor.display_name + '</option>');
+        $("#vendor").append('<option value="' + vendor.id + '">' + vendor.vendor_display_name + '</option>');
       }
 
       // Add New Vendor option

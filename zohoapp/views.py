@@ -452,7 +452,7 @@ def save_expense(request):
             vendor=vendor_table.objects.get(vendor_display_name=v)
 
             # customer = addcustomer.objects.get(customer_id=c)
-            taxamt = request.POST.get('taxamt', False)
+            taxamt = request.POST.get('taxamt',False)
             # reporting_tags=request.post.get('retag')
             image = request.FILES.get('image')
             # if 'image' in request.FILES:
@@ -651,6 +651,7 @@ def payment_term(request):
 
 @login_required(login_url='login')
 def add_vendor(request):
+    user = User.objects.get(id=request.user.id)
     if request.method == "POST":
         vendor_data = vendor_table()
         vendor_data.salutation = request.POST.get('salutation')
@@ -701,6 +702,7 @@ def add_vendor(request):
         vendor_data.sphone=request.POST.get('sphone')
         vendor_data.sfax=request.POST.get('sfax')
         vendor_data.save()
+        print("vendor_data:", vendor_data)
 # .......................................................adding to remaks table.....................
         vdata=vendor_table.objects.get(id=vendor_data.id)
         vendor=vdata
@@ -709,7 +711,7 @@ def add_vendor(request):
         rdata.user=udata
         rdata.vendor=vdata
         rdata.save()
-
+        print("rdata:", rdata)
 
 #  ...........................adding multiple rows of table to model  ........................................................       
         salutation =request.POST.getlist('salutation[]')
@@ -812,7 +814,7 @@ def dele(request,id):
     
     return redirect('expensepage')
 def vendor_dropdown(request):
-    user = request.user
+    user = User.objects.get(id=request.user.id)
 
     options = []
     vendor_objects = vendor_table.objects.filter(user=user)
