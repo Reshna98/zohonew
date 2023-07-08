@@ -75,7 +75,7 @@
   <div class="" style="margin-top:1rem;color:white;">
     <h1></h1>
     <div style="height: 450px; overflow-y: scroll;">
-      <form action="{% url 'entr_custmr' %}" method="POST" enctype="multipart/form-data"
+      <form action="{% url 'entr_custmr' %}" method="POST" enctype="multipart/form-data" id="add-customer-form"
         style="color: azure ; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:22px;">
         {% csrf_token %}
         <h2 style=" font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"><b>New Customer</b></h2>
@@ -540,7 +540,7 @@
             <input type="number" id="term" name="day"><br>
           </div><br>
           <div class="col-sm-10 form-inline">
-            <input type="submit" class="mr-3 btn btn-success" value="Save">&nbsp;&nbsp;&nbsp;
+            <input type="submit" class="mr-3 btn btn-success" value="Save" id="submit-btn">&nbsp;&nbsp;&nbsp;
             <input type="reset" value="Cancel"></button>
           </div><br>
         </form>
@@ -549,6 +549,8 @@
     
 
 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
     <script>
@@ -664,7 +666,107 @@
       function closepop() {
         popu.classList.remove("open-popup-1");
       }
-    </script>
+$(document).on("click", "#save_customer", function(e) {
+  e.preventDefault(); // Prevent the default form submission
+
+  var type = $("#type").val();
+  var txtFullName = $("#txtFullName").val();
+  var cpname = $("#cpname").val();
+  var email = $("#myEmail").val();
+  var wphone = $("#wphone").val();
+  var mobile = $("#mobile").val();
+  var skname = $("#skname").val();
+  var desg = $("#desg").val();
+  var dept = $("#dept").val();
+  var wbsite = $("#wbsite").val();
+  var gstt = $("#gstt").val();
+  var posply = $("#posply").val();
+  var tax1 = $("#tax1").val();
+  var crncy = $("#crncy").val();
+  var obal = $("#obal").val();
+  var plst = $("#plst").val();
+  var plang = $("#plang").val();
+  var fbk = $("#fbk").val();
+  var twtr = $("#twtr").val();
+  var atn = $("#atn").val();
+  var ctry = $("#ctry").val();
+  var addrs = $("#addrs").val();
+  var addrs1 = $("#addrs1").val();
+  var bct = $("#bct").val();
+  var bst = $("#bst").val();
+  var bzip = $("#bzip").val();
+  var bpon = $("#bpon").val();
+  var bfx = $("#bfx").val();
+  var sal = $("#sal").val();
+  var ftname = $("#ftname").val();
+  var ltname = $("#ltname").val();
+  var mail = $("#mail").val();
+  var bworkpn = $("#bworkpn").val();
+  var bmobile = $("#bmobile").val();
+  var bskype = $("#bskype").val();
+  var bdesg = $("#bdesg").val();
+  var bdept = $("#bdept").val();
+
+  $.ajax({
+    type: "POST",
+    url:  "/entr_custmr/",
+    data: {
+      type: type,
+      txtFullName: txtFullName,
+      cpname: cpname,
+      email: email,
+      wphone: wphone,
+      mobile: mobile,
+      skname: skname,
+      desg: desg,
+      dept: dept,
+      wbsite: wbsite,
+      gstt: gstt,
+      posply: posply,
+      tax1: tax1,
+      crncy: crncy,
+      obal: obal,
+      plst: plst,
+      plang: plang,
+      fbk: fbk,
+      twtr: twtr,
+      atn: atn,
+      ctry: ctry,
+      addrs: addrs,
+      addrs1: addrs1,
+      bct: bct,
+      bst: bst,
+      bzip: bzip,
+      bpon: bpon,
+      bfx: bfx,
+      sal: sal,
+      ftname: ftname,
+      ltname: ltname,
+      mail: mail,
+      bworkpn: bworkpn,
+      bmobile: bmobile,
+      bskype: bskype,
+      bdesg: bdesg,
+      bdept: bdept,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    },
+    success: function(response) {
+      document.getElementById("customerForm").reset();
+      console.log("AJAX request successful");
+      redirectToSaveExpense(); // Redirect to the save expense page
+    },
+    error: function(xhr, status, error) {
+      console.log("AJAX request failed");
+      console.log("Error:", error);
+    }
+  });
+});
+
+function redirectToSaveExpense() {
+  console.log("Redirecting to save_expense page");
+  window.location.href = "{% url 'save_expense' %}";
+}
+ </script>
   </div>
 
   {% endblock %}

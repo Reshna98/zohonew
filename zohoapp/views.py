@@ -562,22 +562,23 @@ def expense_details(request, pk):
 def entr_custmr(request):
     if request.user.is_authenticated:
         if request.method=='POST':
+            form_data = request.POST.dict()
             type=request.POST.get('type')
             txtFullName=request.POST['txtFullName']
             cpname=request.POST['cpname']
            
-            email=request.POST.get('myEmail',None)
-            wphone=request.POST.get('wphone',None)
-            mobile=request.POST.get('mobile',None)
-            skname=request.POST.get('skname',None)
-            desg=request.POST.get('desg',None)      
-            dept=request.POST.get('dept',None)
-            wbsite=request.POST.get('wbsite',None)
+            email=request.POST.get('myEmail')
+            wphone=request.POST.get('wphone')
+            mobile=request.POST.get('mobile')
+            skname=request.POST.get('skname')
+            desg=request.POST.get('desg')      
+            dept=request.POST.get('dept')
+            wbsite=request.POST.get('wbsite')
 
-            gstt=request.POST.get('gstt',None)
-            posply=request.POST.get('posply',None)
-            tax1=request.POST.get('tax1',None)
-            crncy=request.POST.get('crncy',None)
+            gstt=request.POST.get('gstt')
+            posply=request.POST.get('posply')
+            tax1=request.POST.get('tax1')
+            crncy=request.POST.get('crncy')
             obal=request.POST.get('obal')
             obal = int(obal) if obal and obal.strip() else 0 
 
@@ -592,32 +593,32 @@ def entr_custmr(request):
             except payment_terms.DoesNotExist:
                 pterms = None
 
-            plst=request.POST.get('plst',None)
-            plang=request.POST.get('plang',None)
-            fbk=request.POST.get('fbk',None)
-            twtr=request.POST.get('twtr',None)
+            plst=request.POST.get('plst')
+            plang=request.POST.get('plang')
+            fbk=request.POST.get('fbk')
+            twtr=request.POST.get('twtr')
         
-            atn=request.POST.get('atn',None)
-            ctry=request.POST.get('ctry',None)
+            atn=request.POST.get('atn')
+            ctry=request.POST.get('ctry')
             
-            addrs=request.POST.get('addrs',None)
-            addrs1=request.POST.get('addrs1',None)
-            bct=request.POST.get('bct',None)
-            bst=request.POST.get('bst',None)
-            bzip=request.POST.get('bzip',None)
-            bpon=request.POST.get('bpon',None)
-            bfx=request.POST.get('bfx',None)
+            addrs=request.POST.get('addrs')
+            addrs1=request.POST.get('addrs1')
+            bct=request.POST.get('bct')
+            bst=request.POST.get('bst')
+            bzip=request.POST.get('bzip')
+            bpon=request.POST.get('bpon')
+            bfx=request.POST.get('bfx')
 
-            sal=request.POST.get('sal',None)
-            ftname=request.POST.get('ftname',None)
-            ltname=request.POST.get('ltname',None)
-            mail=request.POST.get('mail',None)
-            bworkpn=request.POST.get('bworkpn',None)
-            bmobile=request.POST.get('bmobile',None)
+            sal=request.POST.get('sal')
+            ftname=request.POST.get('ftname')
+            ltname=request.POST.get('ltname')
+            mail=request.POST.get('mail')
+            bworkpn=request.POST.get('bworkpn')
+            bmobile=request.POST.get('bmobile')
 
-            bskype=request.POST.get('bskype',None)
-            bdesg=request.POST.get('bdesg',None)
-            bdept=request.POST.get('bdept',None)
+            bskype=request.POST.get('bskype')
+            bdesg=request.POST.get('bdesg')
+            bdept=request.POST.get('bdept')
             u = User.objects.get(id = request.user.id)
 
           
@@ -625,17 +626,17 @@ def entr_custmr(request):
                         companyName=cpname,customerEmail=email,customerWorkPhone=wphone,
                          customerMobile=mobile,skype=skname,designation=desg,department=dept,
                            website=wbsite,GSTTreatment=gstt,placeofsupply=posply, Taxpreference=tax1,
-                             currency=crncy,OpeningBalance=obal, PaymentTerms=pterms,
+                             currency=crncy,OpeningBalance=obal, 
                                 PriceList=plst,PortalLanguage=plang,Facebook=fbk,Twitter=twtr,
-                                 Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,
+                                 Attention=atn,country=ctry,Address1=addrs,Address2=addrs1,PaymentTerms=pterms,
                                   city=bct,state=bst,zipcode=bzip,phone1=bpon,
                                    fax=bfx,CPsalutation=sal,Firstname=ftname,
                                     Lastname=ltname,CPemail=mail,CPphone=bworkpn,
                                     CPmobile= bmobile,CPskype=bskype,CPdesignation=bdesg,
                                      CPdepartment=bdept,user=u )
             ctmr.save()  
-           
-            return redirect('save_expense')
+            return HttpResponse('Account saved successfully')
+            # return redirect('save_expense')
         return render(request, 'addcustomer.html')
 
 
@@ -643,8 +644,8 @@ def entr_custmr(request):
 
 def payment_term(request):
     if request.method=='POST':
-        term=request.POST.get('term',None)
-        day=request.POST.get('day',None)
+        term=request.POST.get('term')
+        day=request.POST.get('day')
         ptr=payment_terms(Terms=term,Days=day)
         ptr.save()
         return redirect("entr_custmr")
