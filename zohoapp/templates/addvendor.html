@@ -957,6 +957,8 @@
        
 
       }
+     
+
 
 $(document).on("click", "#Vendorsave", function(e) {
         e.preventDefault();  
@@ -1011,15 +1013,15 @@ $(document).on("click", "#Vendorsave", function(e) {
       szip: $("#szp").val(),
       sphone: $("#sphone").val(),
       sfax: $("#sfx").val(),
-    //   salutation_person: $("select[name='salutation[]']").map(function() { return $(this).val(); }).get(),
-    //   first_name_person: $("input[name='first_name[]']").map(function() { return $(this).val(); }).get(),
-    //   last_name_person: $("input[name='last_name[]']").map(function() { return $(this).val(); }).get(),
-    //   email_person: $("input[name='email[]']").map(function() { return $(this).val(); }).get(),
-    //   work_phone_person: $("input[name='wphone[]']").map(function() { return $(this).val(); }).get(),
-    //   mobile_person: $("input[name='mobile[]']").map(function() { return $(this).val(); }).get(),
-    //   skype_person: $("input[name='skype[]']").map(function() { return $(this).val(); }).get(),
-    //   designation_person: $("input[name='designation[]']").map(function() { return $(this).val(); }).get(),
-    //   department_person: $("input[name='department[]']").map(function() { return $(this).val(); }).get(),
+      salutation_person: $("select[name='salutation[]']").map(function() { return $(this).val(); }).get(),
+      first_name_person: $("input[name='first_name[]']").map(function() { return $(this).val(); }).get(),
+      last_name_person: $("input[name='last_name[]']").map(function() { return $(this).val(); }).get(),
+      email_person: $("input[name='email[]']").map(function() { return $(this).val(); }).get(),
+      work_phone_person: $("input[name='wphone[]']").map(function() { return $(this).val(); }).get(),
+      mobile_person: $("input[name='mobile[]']").map(function() { return $(this).val(); }).get(),
+      skype_person: $("input[name='skype[]']").map(function() { return $(this).val(); }).get(),
+      designation_person: $("input[name='designation[]']").map(function() { return $(this).val(); }).get(),
+      department_person: $("input[name='department[]']").map(function() { return $(this).val(); }).get(),
       remarkTextarea:$("remarkTextarea").val,
       csrfmiddlewaretoken: '{{ csrf_token }}'
      
@@ -1039,7 +1041,8 @@ $(document).on("click", "#Vendorsave", function(e) {
 });
 
 function redirectToSaveExpense() {
-    window.location.href = "{% url 'save_expense' %}";
+    // window.location.href = "{% url 'save_expense' %}";
+    window.location.href = "/save_expense/"; 
   }
 function reloadVendordrop() {
   $.ajax({
@@ -1063,6 +1066,7 @@ function reloadVendordrop() {
     },
   });
 }
+
 </script>
 
 
