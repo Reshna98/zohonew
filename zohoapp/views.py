@@ -738,9 +738,9 @@ def add_vendor(request):
         response_data = {
             'success': True
         }
-        return JsonResponse(response_data)
+        # return JsonResponse(response_data)
 
-        # return redirect('save_expense')
+        return redirect('save_expense')
     return render(request, 'addvendor.html')
 
 def edit_expense(request,expense_id):

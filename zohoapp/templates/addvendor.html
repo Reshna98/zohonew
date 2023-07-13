@@ -960,112 +960,112 @@
      
 
 
-$(document).on("click", "#Vendorsave", function(e) {
-        e.preventDefault();  
-    var x = $("#select1").val();
-    var y = $("#fname").val();
-    var z = $("#lname").val();
-    console.log("Button clicked");
-    console.log("x value:", x);
-    console.log("y value:", y);
-    console.log("z value:", z);
+// $(document).on("click", "#Vendorsave", function(e) {
+//         e.preventDefault();  
+//     var x = $("#select1").val();
+//     var y = $("#fname").val();
+//     var z = $("#lname").val();
+//     console.log("Button clicked");
+//     console.log("x value:", x);
+//     console.log("y value:", y);
+//     console.log("z value:", z);
         
-  $.ajax({
-    type: 'POST',
-    url: "{% url 'add_vendor' %}",
+//   $.ajax({
+//     type: 'POST',
+//     url: "{% url 'add_vendor' %}",
 
-    data: {
-      salutation:x,
-    //   salutation: $("#salutation").val(),
-      first_name:y,
-      last_name: z,
-      company_name: $("#company_name").val(),
-    //   vendor_display_name: $("#select2").val(),
-      vendor_display_name: x + " " + y + " " + z,
+//     data: {
+//       salutation:x,
+//     //   salutation: $("#salutation").val(),
+//       first_name:y,
+//       last_name: z,
+//       company_name: $("#company_name").val(),
+//     //   vendor_display_name: $("#select2").val(),
+//       vendor_display_name: x + " " + y + " " + z,
 
-      vendor_email: $("#vendor_email").val(),
-      website: $("#web").val(),
-      vendor_wphone: $("#workphone").val(),
-      vendor_mphone: $("#mphone").val(),
-      skype_number: $("#skype_number").val(),
-      designation: $("#designation").val(),
-      department: $("#department").val(),
-      gst_treatment: $("#GSTT").val(),
-      gst_number: $("#gst_input").val(),
-      pan_number: $("#pan_input").val(),
-      source_supply: $("#PLACES").val(),
-      currency: $("#currency").val(),
-      opening_bal: $("#opening_bal").val(),
-      payment_terms: $("#PLACEP").val(),
-      battention: $("#batten").val(),
-      bcountry: $("#btry").val(),
-      baddress: $("#badd1").val(),
-      bcity: $("#bcty").val(),
-      bstate: $("#bste").val(),
-      bzip: $("#bzp").val(),
-      bphone: $("#bphone").val(),
-      bfax: $("#bfax").val(),
-      sattention: $("#satten").val(),
-      scountry: $("#sctry").val(),
-      saddress: $("#sadd1").val(),
-      scity: $("#scity").val(),
-      sstate: $("#sste").val(),
-      szip: $("#szp").val(),
-      sphone: $("#sphone").val(),
-      sfax: $("#sfx").val(),
-      salutation_person: $("select[name='salutation[]']").map(function() { return $(this).val(); }).get(),
-      first_name_person: $("input[name='first_name[]']").map(function() { return $(this).val(); }).get(),
-      last_name_person: $("input[name='last_name[]']").map(function() { return $(this).val(); }).get(),
-      email_person: $("input[name='email[]']").map(function() { return $(this).val(); }).get(),
-      work_phone_person: $("input[name='wphone[]']").map(function() { return $(this).val(); }).get(),
-      mobile_person: $("input[name='mobile[]']").map(function() { return $(this).val(); }).get(),
-      skype_person: $("input[name='skype[]']").map(function() { return $(this).val(); }).get(),
-      designation_person: $("input[name='designation[]']").map(function() { return $(this).val(); }).get(),
-      department_person: $("input[name='department[]']").map(function() { return $(this).val(); }).get(),
-      remarkTextarea:$("remarkTextarea").val,
-      csrfmiddlewaretoken: '{{ csrf_token }}'
+//       vendor_email: $("#vendor_email").val(),
+//       website: $("#web").val(),
+//       vendor_wphone: $("#workphone").val(),
+//       vendor_mphone: $("#mphone").val(),
+//       skype_number: $("#skype_number").val(),
+//       designation: $("#designation").val(),
+//       department: $("#department").val(),
+//       gst_treatment: $("#GSTT").val(),
+//       gst_number: $("#gst_input").val(),
+//       pan_number: $("#pan_input").val(),
+//       source_supply: $("#PLACES").val(),
+//       currency: $("#currency").val(),
+//       opening_bal: $("#opening_bal").val(),
+//       payment_terms: $("#PLACEP").val(),
+//       battention: $("#batten").val(),
+//       bcountry: $("#btry").val(),
+//       baddress: $("#badd1").val(),
+//       bcity: $("#bcty").val(),
+//       bstate: $("#bste").val(),
+//       bzip: $("#bzp").val(),
+//       bphone: $("#bphone").val(),
+//       bfax: $("#bfax").val(),
+//       sattention: $("#satten").val(),
+//       scountry: $("#sctry").val(),
+//       saddress: $("#sadd1").val(),
+//       scity: $("#scity").val(),
+//       sstate: $("#sste").val(),
+//       szip: $("#szp").val(),
+//       sphone: $("#sphone").val(),
+//       sfax: $("#sfx").val(),
+//       salutation_person: $("select[name='salutation[]']").map(function() { return $(this).val(); }).get(),
+//       first_name_person: $("input[name='first_name[]']").map(function() { return $(this).val(); }).get(),
+//       last_name_person: $("input[name='last_name[]']").map(function() { return $(this).val(); }).get(),
+//       email_person: $("input[name='email[]']").map(function() { return $(this).val(); }).get(),
+//       work_phone_person: $("input[name='wphone[]']").map(function() { return $(this).val(); }).get(),
+//       mobile_person: $("input[name='mobile[]']").map(function() { return $(this).val(); }).get(),
+//       skype_person: $("input[name='skype[]']").map(function() { return $(this).val(); }).get(),
+//       designation_person: $("input[name='designation[]']").map(function() { return $(this).val(); }).get(),
+//       department_person: $("input[name='department[]']").map(function() { return $(this).val(); }).get(),
+//       remarkTextarea:$("remarkTextarea").val,
+//       csrfmiddlewaretoken: '{{ csrf_token }}'
      
 
-    },
+//     },
 
-    success: function(response) {
-      console.log("Ajax request successful");
-      $("#Vendor").trigger("reset");
-      reloadVendordrop();
-      redirectToSaveExpense();
-    },
-    error: function(xhr, status, error) {
-            console.log("Ajax request failed");
-            console.log("Error:", error);}
-  });
-});
+//     success: function(response) {
+//       console.log("Ajax request successful");
+//       $("#Vendor").trigger("reset");
+//       reloadVendordrop();
+//       redirectToSaveExpense();
+//     },
+//     error: function(xhr, status, error) {
+//             console.log("Ajax request failed");
+//             console.log("Error:", error);}
+//   });
+// });
 
-function redirectToSaveExpense() {
-    // window.location.href = "{% url 'save_expense' %}";
-    window.location.href = "/save_expense/"; 
-  }
-function reloadVendordrop() {
-  $.ajax({
-    type: 'GET',
-    url: "{% url 'vendor_dropdown' %}",
-    success: function(response) {
-      // Clear existing options
-      $("#vendor").empty();
+// function redirectToSaveExpense() {
+//     // window.location.href = "{% url 'save_expense' %}";
+//     window.location.href = "/save_expense/"; 
+//   }
+// function reloadVendordrop() {
+//   $.ajax({
+//     type: 'GET',
+//     url: "{% url 'vendor_dropdown' %}",
+//     success: function(response) {
+//       // Clear existing options
+//       $("#vendor").empty();
 
-      // Add default option
-      $("#vendor").append('<option value="">-- Select a vendor --</option>');
+//       // Add default option
+//       $("#vendor").append('<option value="">-- Select a vendor --</option>');
 
-      // Add vendor options
-      for (var i = 0; i < response.length; i++) {
-        var vendor = response[i];
-        $("#vendor").append('<option value="' + vendor.id + '">' + vendor.vendor_display_name + '</option>');
-      }
+//       // Add vendor options
+//       for (var i = 0; i < response.length; i++) {
+//         var vendor = response[i];
+//         $("#vendor").append('<option value="' + vendor.id + '">' + vendor.vendor_display_name + '</option>');
+//       }
 
-      // Add New Vendor option
-      $("#vendor").append('<option value="new">+ New vendor</option>');
-    },
-  });
-}
+//       // Add New Vendor option
+//       $("#vendor").append('<option value="new">+ New vendor</option>');
+//     },
+//   });
+// }
 
 </script>
 
